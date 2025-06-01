@@ -28,7 +28,7 @@ export const createProduct = async (req, res) => {
     currentStock,
     reorderLevel,
     costPrice,
-    supplierId,
+
     category,
     imageUrl,
   } = req.body;
@@ -42,7 +42,7 @@ export const createProduct = async (req, res) => {
       currentStock: currentStock || 0,
       reorderLevel: reorderLevel || 0,
       costPrice,
-      supplierId,
+
       category,
       imageUrl,
       reservedStock: 0,

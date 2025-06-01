@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema(
     currentStock: { type: Number, default: 0 },
     reorderLevel: { type: Number, default: 10 },
     costPrice: { type: Number, required: true, min: 0 },
-    supplierId: { type: mongoose.Schema.Types.ObjectId, ref: "Supplier" },
+
     category: String,
     imageUrl: String,
     reservedStock: { type: Number, default: 0 },
