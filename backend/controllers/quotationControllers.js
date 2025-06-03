@@ -3,7 +3,7 @@ import Client from "../models/client.js";
 import ProductSupplier from "../models/productSupplier.js";
 import Product from "../models/product.js";
 import StockLog from "../models/stockLog.js";
-
+// rejectQuotation updateQuotation getQuotationById getAllQuotations deleteQuotation
 export const createQuotation = async (req, res) => {
   try {
     const { clientId, products } = req.body;
@@ -202,6 +202,63 @@ export const approveQuotation = async (req, res) => {
       : "Quotation set to awaiting stock. See toPurchase list for shortfall.";
 
     return res.json({ quotation, message, toPurchase });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const fulfillQuotation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const quotation = await Quotation.findById(id);
+    if (!quotation) {
+      return res.status(404).json({ message: "Quotation not found" });
+    }
+
+    if (quotation.status !== "approved") {
+      return res.status(400).json({
+        message: `Cannot fulfill a quotation with status '${quotation.status}'.`,
+      });
+    }
+
+    for (const item of quotation.products) {
+      const { productSupplierId, quantity } = item;
+
+      const ps = await ProductSupplier.findById(productSupplierId);
+      if (!ps) {
+        return res
+          .status(400)
+          .json({ message: `ProductSupplier ${productSupplierId} not found` });
+      }
+
+      const product = await Product.findById(ps.productId);
+      if (!product) {
+        return res
+          .status(400)
+          .json({ message: `Product ${ps.productId} not found` });
+      }
+
+      product.reservedStock -= quantity;
+      product.currentStock -= quantity;
+      await product.save();
+
+      await StockLog.create({
+        productId: product._id,
+        changeType: "decrease",
+        source: "quotation",
+        referenceId: quotation._id,
+        quantityChanged: quantity,
+        note: `Fulfilled quotation ${quoatation._id} (removed ${quantity} units)`,
+        date: new Date(),
+      });
+    }
+
+    quotation.status = "fulfilled";
+    await quotation.save();
+    return res.json({
+      message: "Quotation fulfilled successfully.",
+      quotation,
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
