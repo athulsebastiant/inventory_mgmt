@@ -3,7 +3,7 @@ import Client from "../models/client.js";
 import ProductSupplier from "../models/productSupplier.js";
 import Product from "../models/product.js";
 import StockLog from "../models/stockLog.js";
-// rejectQuotation updateQuotation getQuotationById getAllQuotations deleteQuotation
+// updateQuotation  deleteQuotation
 export const createQuotation = async (req, res) => {
   try {
     const { clientId, products } = req.body;
@@ -238,7 +238,7 @@ export const fulfillQuotation = async (req, res) => {
           .json({ message: `Product ${ps.productId} not found` });
       }
 
-      product.reservedStock -= quantity;
+      product.reservedStock = Math.max(0, product.reservedStock - quantity);
       product.currentStock -= quantity;
       await product.save();
 
@@ -248,7 +248,7 @@ export const fulfillQuotation = async (req, res) => {
         source: "quotation",
         referenceId: quotation._id,
         quantityChanged: quantity,
-        note: `Fulfilled quotation ${quoatation._id} (removed ${quantity} units)`,
+        note: `Fulfilled quotation ${quotation._id} (removed ${quantity} units)`,
         date: new Date(),
       });
     }
@@ -258,6 +258,145 @@ export const fulfillQuotation = async (req, res) => {
     return res.json({
       message: "Quotation fulfilled successfully.",
       quotation,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const rejectQuotation = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const quotation = await Quotation.findById(id);
+    if (!quotation) {
+      return res.status(404).json({ message: "Quotation not found" });
+    }
+
+    if (
+      quotation.status !== "approved" &&
+      quotation.status !== "awaiting stock"
+    ) {
+      return res.status(400).json({
+        message: "Only approved or awaiting quoatatios can be rejected",
+      });
+    }
+
+    for (const item of quotation.products) {
+      const ps = await ProductSupplier.findById(item.productSupplierId);
+      if (!ps) {
+        return res.status(404).json({
+          message: `ProductSupplier ${item.productSupplierId} not found`,
+        });
+      }
+
+      const product = await Product.findById(ps.productId);
+      if (!product) {
+        return res
+          .status(404)
+          .json({ message: `Product ${ps.productId} not found` });
+      }
+
+      product.reservedStock -= item.quantity;
+      if (product.reservedStock < 0) product.reservedStock = 0;
+      await product.save();
+
+      await StockLog.create({
+        productId: product._id,
+        changeType: "increase",
+        source: "quotation",
+        referenceId: quotation._id,
+        quantityChanged: item.quantity,
+        note: `Released ${item.quantity} units due to quotation rejection`,
+        date: new Date(),
+      });
+    }
+
+    quotation.status = "rejected";
+    await quotation.save();
+
+    return res.json({
+      message: "Quotation rejected and stock released",
+      quotation,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getAllQuotations = async (req, res) => {
+  try {
+    const quotations = await Quotation.find();
+    return res.json(quotations);
+  } catch (error) {}
+};
+
+export const getQuotationById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const quotation = await Quotation.findById(id);
+    if (!quotation) {
+      return res.status(404).json({ message: "Quotation not found" });
+    }
+    return res.json(quotation);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+export const deleteQuotation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const quotation = await Quotation.findById(id);
+    if (!quotation) {
+      return res.status(404).json({ message: "Quotation not found" });
+    }
+
+    if (["approved", "awaiting stock"].includes(quotation.status)) {
+      for (const item of quotation.products) {
+        const ps = await ProductSupplier.findById(ps.productSupplierId);
+        if (!ps) continue;
+
+        const product = await Product.findById(ps.productId);
+        if (!product) continue;
+
+        const reservedAgg = await StockLog.aggregate([
+          {
+            $match: {
+              source: "quotation",
+              referenceId: quotation._id,
+              productId: product._id,
+              changeType: "decrease",
+            },
+          },
+          {
+            $group: { _id: null, totalReserved: { $sum: "$quantityChanged" } },
+          },
+        ]);
+
+        const reservedSoFar =
+          reservedAgg.length > 0 ? reservedAgg[0].totalReserved : 0;
+        if (reservedSoFar > 0) {
+          product.reservedStock -= reservedSoFar;
+          if (product.reservedStock < 0) product.reservedStock = 0;
+          await product.save();
+
+          await StockLog.create({
+            productId: product._id,
+            changeType: "increase",
+            source: "quotation",
+            referenceId: quotation._id,
+            quantityChanged: reservedSoFar,
+            note: `Released ${reservedSoFar} units due to deletion of quotation ${quotation._id}`,
+            date: new Date(),
+          });
+        }
+      }
+    }
+
+    await quotation.remove();
+    return res.json({
+      message: "Quotation deleted and reserved stock  (if any) released",
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });

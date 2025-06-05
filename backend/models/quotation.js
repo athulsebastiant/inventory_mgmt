@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import productSupplier from "./productSupplier";
+import ProductSupplier from "./productSupplier.js";
 
 const quotationSchema = new mongoose.Schema(
   {
