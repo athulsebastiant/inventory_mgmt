@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema(
     costPrice: { type: Number, required: true, min: 0 },
 
     category: String,
-    imageUrl: String,
+    imagesUrl: { type: Array, required: true },
     reservedStock: { type: Number, default: 0 },
   },
   { timestamps: true }

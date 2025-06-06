@@ -8,11 +8,13 @@ import clientRoutes from "./routes/clientRoutes.js";
 import purchaseOrderRoutes from "./routes/purchaseOrderRoutes.js";
 import quotationRoutes from "./routes/quotationRoutes.js";
 import cors from "cors";
+import connectCloudinary from "./config/cloudinary.js";
 dotenv.config();
 
 const app = express();
 
 connectDB();
+connectCloudinary();
 app.use(cors());
 app.use(express.json());
 app.use("/api/products", productRoutes);
