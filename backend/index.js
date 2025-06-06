@@ -7,11 +7,13 @@ import productSupplierRoutes from "./routes/productSupplierRoutes.js";
 import clientRoutes from "./routes/clientRoutes.js";
 import purchaseOrderRoutes from "./routes/purchaseOrderRoutes.js";
 import quotationRoutes from "./routes/quotationRoutes.js";
+import cors from "cors";
 dotenv.config();
 
 const app = express();
 
 connectDB();
+app.use(cors());
 app.use(express.json());
 app.use("/api/products", productRoutes);
 app.use("/api/suppliers", supplierRoutes);

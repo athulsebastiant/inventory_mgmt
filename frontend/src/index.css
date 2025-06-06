@@ -73,3 +73,22 @@ footer{
   flex-grow: 1;
   padding: 20px;
 }
+
+.product-list-container{
+  padding-inline:23px ;
+  margin-top: 40px;
+}
+
+.product-list{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  gap: 34px;
+  margin-top: 57px;
+}
+
+.product-tile img{
+  max-width: 100%;
+  border-radius: 5px;
+}
+
