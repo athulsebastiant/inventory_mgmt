@@ -98,3 +98,10 @@ footer{
   text-decoration: none;
 }
 
+.new_product_link{
+  background-color: #161616;
+  padding: 10px;
+  color: #f5dfc4;
+  border-radius: 5px;
+  text-decoration: none;
+}

@@ -42,7 +42,9 @@ const Products = () => {
     <div className="product-list-container">
       <h1>All Products</h1>
       <div>
-        <button>Add New Product</button>
+        <Link to={"add-new-product"} className="new_product_link">
+          Add New Product
+        </Link>
       </div>
       <div className="product-list">{productElements}</div>
     </div>

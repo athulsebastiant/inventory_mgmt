@@ -41,7 +41,8 @@ export const createProduct = async (req, res) => {
     const images = [image1, image2, image3, image4].filter(
       (item) => item !== undefined
     );
-
+    console.log(">>> req.body:", req.body);
+    console.log(">>> req.files:", req.files);
     let imagesUrl = await Promise.all(
       images.map(async (item) => {
         let result = await cloudinary.uploader.upload(item.path, {
@@ -66,7 +67,11 @@ export const createProduct = async (req, res) => {
     });
 
     const savedProduct = await product.save();
-    res.status(201).json(savedProduct);
+    res.status(201).json({
+      success: true, // Explicitly indicate success
+      message: "Product created successfully!", // Optional: Add a success message
+      product: savedProduct, // Include the actual product data
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
