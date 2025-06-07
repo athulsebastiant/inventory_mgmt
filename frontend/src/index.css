@@ -89,6 +89,12 @@ footer{
 
 .product-tile img{
   max-width: 100%;
+  height: 25%;
   border-radius: 5px;
+}
+
+.product-tile a {
+  color: #161616;
+  text-decoration: none;
 }
 

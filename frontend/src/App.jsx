@@ -7,6 +7,7 @@ import Clients from "./pages/Clients";
 import Suppliers from "./pages/Suppliers";
 import ClientQuots from "./pages/ClientQuots";
 import Purchasing from "./pages/Purchasing";
+import ProductDetails from "./pages/ProductDetails";
 const App = () => {
   return (
     <BrowserRouter>
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/" element={<Layout />}>
           <Route path="about" element={<About />} />
           <Route path="products" element={<Products />} />
+          <Route path="products/:id" element={<ProductDetails />} />
           <Route path="clients" element={<Clients />} />
           <Route path="suppliers" element={<Suppliers />} />
           <Route path="client-quotations" element={<ClientQuots />} />

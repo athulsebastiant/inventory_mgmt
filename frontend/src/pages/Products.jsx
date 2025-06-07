@@ -28,10 +28,11 @@ const Products = () => {
   const productElements = products.map((product) => (
     <div key={product._id} className="product-tile">
       <Link to={`${product._id}`}>
-        <img src={product.imageUrl} alt="" />
+        <img src={product.imagesUrl[0]} alt="" />
         <div className="product-info">
           <h3>{product.name}</h3>
           <p>Current Stock: {product.currentStock}</p>
+          <p>Cost Price: ${product.costPrice}</p>
         </div>
       </Link>
     </div>
