@@ -9,6 +9,8 @@ import ClientQuots from "./pages/ClientQuots";
 import Purchasing from "./pages/Purchasing";
 import ProductDetails from "./pages/ProductDetails";
 import AddNewProduct from "./pages/AddNewProduct";
+import AddNewClient from "./pages/AddNewClient";
+import ClientDetails from "./pages/ClientDetails";
 const App = () => {
   return (
     <BrowserRouter>
@@ -19,6 +21,8 @@ const App = () => {
           <Route path="products/:id" element={<ProductDetails />} />
           <Route path="products/add-new-product" element={<AddNewProduct />} />
           <Route path="clients" element={<Clients />} />
+          <Route path="clients/:id" element={<ClientDetails />} />
+          <Route path="clients/add-new-client" element={<AddNewClient />} />
           <Route path="suppliers" element={<Suppliers />} />
           <Route path="client-quotations" element={<ClientQuots />} />
           <Route path="purchasing" element={<Purchasing />} />

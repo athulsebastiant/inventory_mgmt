@@ -2,9 +2,12 @@ import Client from "../models/client.js";
 
 export const createClient = async (req, res) => {
   try {
+    console.log(req.body);
     const client = new Client(req.body);
     await client.save();
-    res.status(201).json(client);
+    res
+      .status(201)
+      .json({ success: true, message: "Client created", client: client });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
