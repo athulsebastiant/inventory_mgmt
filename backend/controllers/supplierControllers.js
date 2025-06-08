@@ -12,7 +12,13 @@ export const createSupplier = async (req, res) => {
       address: address || "N/A",
     });
     const savedSupplier = await supplier.save();
-    res.status(201).json(savedSupplier);
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "Supplier created",
+        supplier: savedSupplier,
+      });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
