@@ -26,13 +26,11 @@ export const createProductSupplier = async (req, res) => {
       preferred,
     });
     await newLink.save();
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Product Supplier Link created",
-        newLink,
-      });
+    res.status(201).json({
+      success: true,
+      message: "Product Supplier Link created",
+      newLink,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -61,7 +59,10 @@ export const getProductSuppliersByProduct = async (req, res) => {
 export const getProductSuppliersBySupplier = async (req, res) => {
   try {
     const { supplierId } = req.params;
-    const links = await productSupplier.find({ supplierId });
+    const links = await productSupplier.find({ supplierId }).populate({
+      path: "productId",
+      select: "name imagesUrl",
+    });
     res.json(links);
   } catch (err) {
     res.status(500).json({ message: "Server error" });

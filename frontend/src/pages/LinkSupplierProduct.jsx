@@ -120,7 +120,7 @@ const LinkSupplierProduct = () => {
           )}
         </div>
       </div>
-      <style jsx>{`
+      <style>{`
         .select-container {
           max-width: 400px;
           margin: 20px 0;
