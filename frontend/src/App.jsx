@@ -13,6 +13,8 @@ import AddNewClient from "./pages/AddNewClient";
 import ClientDetails from "./pages/ClientDetails";
 import SupplierDetails from "./pages/SupplierDetails";
 import AddNewSupplier from "./pages/AddNewSupplier";
+import LinkSupplierProduct from "./pages/LinkSupplierProduct";
+import ViewSuppliersLinks from "./pages/ViewSuppliersLinks";
 const App = () => {
   return (
     <BrowserRouter>
@@ -26,7 +28,13 @@ const App = () => {
           <Route path="clients/:id" element={<ClientDetails />} />
           <Route path="clients/add-new-client" element={<AddNewClient />} />
           <Route path="suppliers" element={<Suppliers />} />
-          <Route path="suppliers/:id" element={<SupplierDetails />} />
+          <Route path="suppliers/:id" element={<SupplierDetails />}>
+            <Route
+              path="link-supplier-product"
+              element={<LinkSupplierProduct />}
+            />
+            <Route path="all-link" element={<ViewSuppliersLinks />} />
+          </Route>
           <Route
             path="suppliers/add-new-supplier"
             element={<AddNewSupplier />}

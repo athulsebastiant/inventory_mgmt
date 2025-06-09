@@ -26,7 +26,13 @@ export const createProductSupplier = async (req, res) => {
       preferred,
     });
     await newLink.save();
-    res.status(201).json(newLink);
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "Product Supplier Link created",
+        newLink,
+      });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
