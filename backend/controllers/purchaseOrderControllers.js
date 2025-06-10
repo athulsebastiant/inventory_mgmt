@@ -2,7 +2,7 @@ import PurchaseOrder from "../models/purchaseOrder.js";
 import ProductSupplier from "../models/productSupplier.js";
 import Supplier from "../models/supplier.js";
 import Product from "../models/product.js";
-
+import StockLog from "../models/stockLog.js";
 export const createPurchaseOrder = async (req, res) => {
   try {
     const { supplierId, items, expectedDeliveryDate } = req.body;
@@ -66,7 +66,10 @@ export const createPurchaseOrder = async (req, res) => {
 
 export const getAllPurchaseOrders = async (req, res) => {
   try {
-    const orders = await PurchaseOrder.find();
+    const orders = await PurchaseOrder.find().populate({
+      path: "supplierId",
+      select: "name",
+    });
 
     return res.json(orders);
   } catch (err) {
@@ -76,7 +79,15 @@ export const getAllPurchaseOrders = async (req, res) => {
 
 export const getPurchaseOrderById = async (req, res) => {
   try {
-    const po = await PurchaseOrder.findById(req.params.id);
+    const po = await PurchaseOrder.findById(req.params.id)
+      .populate("supplierId", "name")
+      .populate({
+        path: "items.productSupplierId",
+        populate: {
+          path: "productId",
+          select: "name imagesUrl", // get product name
+        },
+      });
 
     if (!po) return res.status(404).json({ message: "PO not found" });
     return res.json(po);
@@ -106,6 +117,17 @@ export const updatePurchaseOrder = async (req, res) => {
 
         product.currentStock += item.quantityOrdered;
         await product.save();
+
+        const log = new StockLog({
+          productId: ps.productId,
+          changeType: "increase",
+          source: "purchase-order",
+          referenceId: po._id,
+          quantityChanged: item.quantityOrdered,
+          note: `PO ${po._id} delivered`,
+          date: new Date(),
+        });
+        await log.save();
       }
     }
 
@@ -115,6 +137,7 @@ export const updatePurchaseOrder = async (req, res) => {
     await po.save();
     return res.json(po);
   } catch (error) {
+    console.error("Update PO Error:", error);
     return res.status(500).json({ message: error.message });
   }
 };

@@ -16,6 +16,7 @@ import AddNewSupplier from "./pages/AddNewSupplier";
 import LinkSupplierProduct from "./pages/LinkSupplierProduct";
 import ViewSuppliersLinks from "./pages/ViewSuppliersLinks";
 import NewPurchase from "./pages/NewPurchase";
+import PurchaseDetails from "./pages/PurchaseDetails";
 const App = () => {
   return (
     <BrowserRouter>
@@ -42,6 +43,7 @@ const App = () => {
           />
           <Route path="client-quotations" element={<ClientQuots />} />
           <Route path="purchasing" element={<Purchasing />} />
+          <Route path="purchasing/:id" element={<PurchaseDetails />} />
           <Route path="purchasing/new-purchase" element={<NewPurchase />} />
         </Route>
       </Routes>
