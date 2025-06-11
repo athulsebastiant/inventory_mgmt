@@ -94,7 +94,9 @@ export const createQuotation = async (req, res) => {
       status === "awaiting stock"
         ? "Quotation created; some items await stock. See toPurchase list."
         : "Quotation created and fully reserved.";
-    return res.status(201).json({ quotation, message, toPurchase });
+    return res
+      .status(201)
+      .json({ success: true, quotation, message, toPurchase });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

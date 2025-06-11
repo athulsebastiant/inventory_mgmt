@@ -48,7 +48,10 @@ export const getAllProductSuppliers = async (req, res) => {
 export const getProductSuppliersByProduct = async (req, res) => {
   try {
     const { productId } = req.params;
-    const links = await productSupplier.find({ productId });
+    const links = await productSupplier.find({ productId }).populate({
+      path: "supplierId",
+      select: "name",
+    });
 
     res.json(links);
   } catch (err) {
