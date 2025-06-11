@@ -111,7 +111,7 @@ export const approveQuotation = async (req, res) => {
     }
 
     if (!["pending", "awaiting stock"].includes(quotation.status)) {
-      return res.status(400).json({
+      return res.status(201).json({
         message: `Cannot approve a quotation with status '${quotation.status}'.`,
       });
     }
@@ -192,7 +192,11 @@ export const approveQuotation = async (req, res) => {
         toPurchase.push({ productId: product._id, stillNeeded: shortfall });
       } else {
         allFulfilled = false;
-        toPurchase.push({ productId: product._id, stillNeeded: needed });
+        toPurchase.push({
+          productId: product._id,
+          productName: product.name,
+          stillNeeded: needed,
+        });
       }
     }
 
@@ -328,7 +332,10 @@ export const rejectQuotation = async (req, res) => {
 
 export const getAllQuotations = async (req, res) => {
   try {
-    const quotations = await Quotation.find();
+    const quotations = await Quotation.find().populate({
+      path: "clientId",
+      select: "name",
+    });
     return res.json(quotations);
   } catch (error) {}
 };
@@ -336,7 +343,19 @@ export const getAllQuotations = async (req, res) => {
 export const getQuotationById = async (req, res) => {
   try {
     const { id } = req.params;
-    const quotation = await Quotation.findById(id);
+    const quotation = await Quotation.findById(id)
+      .populate({
+        path: "clientId",
+        select: "name",
+      })
+      .populate({
+        path: "products.productSupplierId", // Path to the productSupplierId within the products array
+        populate: {
+          // Nested populate for the product within productSupplier
+          path: "productId", // Path to the productId within the productSupplier schema
+          select: "name imagesUrl", // Select only the 'name' field from the product
+        },
+      });
     if (!quotation) {
       return res.status(404).json({ message: "Quotation not found" });
     }
