@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import "../styles/AddNewSupplier.css";
 const AddNewSupplier = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
     try {
       const body = {
         name,
@@ -33,12 +37,19 @@ const AddNewSupplier = () => {
       }
     } catch (error) {
       console.log(error);
+      setError("Failed to add supplier. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
   return (
-    <>
-      <h2>Add New Supplier</h2>
-      <form onSubmit={onSubmitHandler}>
+    <div className="container">
+      <nav className="breadcrumb">
+        <Link to="/suppliers">Suppliers</Link> &gt;{" "}
+        <span>Add New Supplier</span>
+      </nav>
+      <h2 className="page-title">Add New Supplier</h2>
+      <form onSubmit={onSubmitHandler} className="supplier-form">
         <label htmlFor="name">Enter name of supplier</label>
         <input
           type="text"
@@ -78,9 +89,12 @@ const AddNewSupplier = () => {
           required
           onChange={(e) => setAddress(e.target.value)}
         />
-        <button type="submit">ADD</button>
+        {error && <p className="error-text">{error}</p>}
+        <button type="submit" className="primary-button" disabled={loading}>
+          {loading ? "Adding..." : "ADD"}
+        </button>
       </form>
-    </>
+    </div>
   );
 };
 

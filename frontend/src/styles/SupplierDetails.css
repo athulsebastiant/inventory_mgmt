@@ -1,0 +1,74 @@
+.container {
+    background-color: #FFF7ED;
+    padding: 2rem;
+    min-height: 100vh;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    color: #6b5b47;
+}
+
+.breadcrumb a {
+    color: #8b7355;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.breadcrumb span {
+    color: #3d3d3d;
+}
+
+/* Supplier Details Card */
+.supplier-details-card {
+    background-color: #f9f0e7;
+    border: 1px solid #f5dfc4;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    color: #252525;
+}
+
+.supplier-details-card h2 {
+    margin-bottom: 0.5rem;
+}
+
+/* Tab Navigation */
+.tab-nav {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.tab-link {
+    padding: 0.5rem 1rem;
+    background-color: #e8d5b7;
+    color: #252525;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    font-weight: 500;
+}
+
+.tab-link:hover {
+    background-color: #f5dfc4;
+}
+
+.tab-link.active {
+    background-color: #8b7355;
+    color: #FFF7ED;
+}
+
+/* Status & Errors */
+.status-text {
+    color: #6b5b47;
+    font-style: italic;
+}
+
+.error-text {
+    color: red;
+    font-weight: bold;
+}

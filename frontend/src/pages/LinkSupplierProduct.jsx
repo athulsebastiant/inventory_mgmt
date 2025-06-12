@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
+import "../styles/LinkSupplierProduct.css";
 const LinkSupplierProduct = () => {
   const supplier = useOutletContext();
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState("");
   const [loading, setLoading] = useState(true);
@@ -62,12 +64,14 @@ const LinkSupplierProduct = () => {
 
         navigate(`/suppliers/${supplier._id}/all-link`);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Failed to create product-supplier link", error);
+    }
   };
 
   return (
-    <div>
-      <p>{supplier.name}</p>
+    <div className="link-supplier-container">
+      <h2 className="supplier-name">Link Product to {supplier.name}</h2>
       <div className="select-container">
         <label htmlFor="product-select" className="select-label">
           Select a Product
@@ -120,169 +124,41 @@ const LinkSupplierProduct = () => {
           )}
         </div>
       </div>
-      <style>{`
-        .select-container {
-          max-width: 400px;
-          margin: 20px 0;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-            sans-serif;
-        }
 
-        .select-label {
-          display: block;
-          margin-bottom: 8px;
-          font-weight: 600;
-          color: #333;
-        }
-
-        .custom-select-container {
-          position: relative;
-        }
-
-        .custom-select {
-          border: 2px solid #ddd;
-          border-radius: 8px;
-          padding: 12px;
-          background: white;
-          cursor: pointer;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          min-height: 50px;
-          transition: border-color 0.2s ease;
-          user-select: none;
-        }
-
-        .custom-select:hover {
-          border-color: #999;
-        }
-
-        .custom-select.open {
-          border-color: #007bff;
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
-        }
-
-        .selected-option {
-          flex: 1;
-        }
-
-        .dropdown-arrow {
-          color: #666;
-          transition: transform 0.2s ease;
-          font-size: 12px;
-        }
-
-        .custom-select.open .dropdown-arrow {
-          transform: rotate(180deg);
-        }
-
-        .options-list {
-          position: absolute;
-          top: 100%;
-          left: 0;
-          right: 0;
-          background: white;
-          border: 2px solid #007bff;
-          border-top: none;
-          border-bottom-left-radius: 8px;
-          border-bottom-right-radius: 8px;
-          max-height: 300px;
-          overflow-y: auto;
-          z-index: 1000;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .custom-option {
-          padding: 12px;
-          cursor: pointer;
-          border-bottom: 1px solid #eee;
-          transition: background-color 0.2s ease;
-        }
-
-        .custom-option:hover {
-          background-color: #f8f9fa;
-        }
-
-        .custom-option:last-child {
-          border-bottom: none;
-        }
-
-        .option-content {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .option-image {
-          width: 40px;
-          height: 40px;
-          object-fit: cover;
-          border-radius: 4px;
-          border: 1px solid #eee;
-          flex-shrink: 0;
-        }
-
-        .loading {
-          padding: 20px;
-          text-align: center;
-          color: #666;
-          font-size: 16px;
-        }
-
-        .error {
-          padding: 12px;
-          background-color: #fee;
-          border: 1px solid #fcc;
-          border-radius: 4px;
-          color: #c33;
-        }
-
-        /* Responsive design */
-        @media (max-width: 480px) {
-          .select-container {
-            max-width: 100%;
-          }
-
-          .option-image {
-            width: 32px;
-            height: 32px;
-          }
-
-          .custom-select {
-            padding: 10px;
-          }
-
-          .custom-option {
-            padding: 10px;
-          }
-        }
-      `}</style>
       {selectedProductData ? (
         <>
-          <div>Current Price : ${selectedProductData.costPrice}</div>
-          <form onSubmit={onSubmitHandler}>
-            <label htmlFor="unitPrice">Enter Unit Price</label>
+          <div className="product-info">
+            <strong>Current Price:</strong> ${selectedProductData.costPrice}
+          </div>
+          <form onSubmit={onSubmitHandler} className="link-form">
+            <div className="form-group">
+              <label htmlFor="unitPrice">Enter Unit Price</label>
 
-            <input
-              type="text"
-              name="unitPrice"
-              placeholder="Unit Price"
-              value={unitPrice}
-              onChange={(e) => setUnitPrice(e.target.value)}
-              required
-            />
-            <label htmlFor="leadTimeDays">Enter lead time days </label>
+              <input
+                type="text"
+                name="unitPrice"
+                placeholder="Unit Price"
+                className="form-input"
+                value={unitPrice}
+                onChange={(e) => setUnitPrice(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="leadTimeDays">Enter lead time days </label>
 
-            <input
-              type="text"
-              name="leadTimeDays"
-              placeholder="Lead Time Days"
-              value={leadTimeDays}
-              onChange={(e) => setLeadTimeDays(e.target.value)}
-            />
-
-            <button type="submit">Create Link</button>
+              <input
+                type="text"
+                name="leadTimeDays"
+                placeholder="Lead Time Days"
+                className="form-input"
+                value={leadTimeDays}
+                onChange={(e) => setLeadTimeDays(e.target.value)}
+              />
+            </div>
+            <button type="submit" className="submit-button">
+              Create Link
+            </button>
           </form>
         </>
       ) : null}
