@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import imgUpload from "../images/imgUpload.jpg";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../styles/AddNewProduct.css";
 const AddNewProduct = () => {
   const navigate = useNavigate();
@@ -68,6 +68,9 @@ const AddNewProduct = () => {
 
   return (
     <>
+      <nav className="breadcrumb">
+        <Link to="/products">Products</Link> &gt; <span>Add New Product</span>
+      </nav>
       <h2>Add New Product</h2>
       <form onSubmit={onSubmitHandler}>
         <label htmlFor="name">Enter Name of Product</label>

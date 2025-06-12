@@ -74,6 +74,33 @@ footer{
   padding: 20px;
 }
 
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.breadcrumb-link {
+  color: #8b7355;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+  color: #6b5b47;
+}
+
+.breadcrumb-separator {
+  color: #3d3d3d;
+  font-weight: bold;
+}
+
+.breadcrumb-current {
+  color: #252525;
+  font-weight: 600;
+}
 
 /*css for clients.jsx*/
 .clients-container {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 const AddNewQuotation = () => {
   const navigate = useNavigate();
   const [clients, setClients] = useState([]);
@@ -211,473 +211,482 @@ const AddNewQuotation = () => {
   };
 
   return (
-    <div style={{ display: "flex", gap: "20px", padding: "20px" }}>
-      {/* Left side - Client and Product Selection */}
-      <div style={{ flex: "1", minWidth: "300px" }}>
-        {/* Client Dropdown */}
-        <div
-          className="client-dropdown-container"
-          style={{
-            width: "100%",
-            marginBottom: "20px",
-            position: "relative",
-          }}
-        >
+    <>
+      <nav className="breadcrumb">
+        <Link to="/client-quotations">Quotations</Link> &gt;{" "}
+        <span>Add New Quotation</span>
+      </nav>
+      <div style={{ display: "flex", gap: "20px", padding: "20px" }}>
+        {/* Left side - Client and Product Selection */}
+        <div style={{ flex: "1", minWidth: "300px" }}>
+          {/* Client Dropdown */}
           <div
-            className="dropdown-header"
-            onClick={() => setClientDropdownOpen(!clientDropdownOpen)}
+            className="client-dropdown-container"
             style={{
-              border: "1px solid #ccc",
-              padding: "10px",
-              cursor: "pointer",
-              backgroundColor: "#f9f9f9",
-              borderRadius: "4px",
-            }}
-          >
-            {selectedClient ? selectedClient.name : "Select a client"}
-          </div>
-
-          {clientDropdownOpen && (
-            <div
-              className="dropdown-options"
-              style={{
-                border: "1px solid #ccc",
-                borderTop: "none",
-                maxHeight: "200px",
-                overflowY: "auto",
-                backgroundColor: "white",
-                zIndex: 10,
-                position: "absolute",
-                width: "100%",
-                borderRadius: "0 0 4px 4px",
-              }}
-            >
-              {clients.map((client) => (
-                <div
-                  key={client._id}
-                  className="dropdown-option"
-                  onClick={() => handleClientSelect(client)}
-                  style={{
-                    padding: "10px",
-                    borderBottom: "1px solid #eee",
-                    cursor: "pointer",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.target.style.backgroundColor = "#f0f0f0")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.target.style.backgroundColor = "white")
-                  }
-                >
-                  {client.name}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Client Info */}
-        {selectedClient && (
-          <div
-            className="client-info"
-            style={{
+              width: "100%",
               marginBottom: "20px",
-              border: "1px solid #ccc",
-              padding: "15px",
-              backgroundColor: "#f5f5f5",
-              borderRadius: "4px",
+              position: "relative",
             }}
-          >
-            <h3 style={{ margin: "0 0 10px 0" }}>Selected Client</h3>
-            <p style={{ margin: "5px 0" }}>
-              <strong>Name:</strong> {selectedClient.name}
-            </p>
-            <p style={{ margin: "5px 0" }}>
-              <strong>Phone:</strong> {selectedClient.phone}
-            </p>
-            <p style={{ margin: "5px 0" }}>
-              <strong>Email:</strong> {selectedClient.email}
-            </p>
-          </div>
-        )}
-
-        {/* Product Dropdown */}
-        {selectedClient && (
-          <div
-            className="product-dropdown-container"
-            style={{ width: "100%", position: "relative" }}
           >
             <div
               className="dropdown-header"
-              onClick={() => setProductDropdownOpen(!productDropdownOpen)}
+              onClick={() => setClientDropdownOpen(!clientDropdownOpen)}
               style={{
-                border: "1px solid #ccc",
+                border: "1px solid #f5dfc4",
                 padding: "10px",
                 cursor: "pointer",
-                backgroundColor: "#f9f9f9",
+                backgroundColor: "#f9f0e7",
                 borderRadius: "4px",
               }}
             >
-              Select a product
+              {selectedClient ? selectedClient.name : "Select a client"}
             </div>
 
-            {productDropdownOpen && (
+            {clientDropdownOpen && (
               <div
                 className="dropdown-options"
                 style={{
-                  border: "1px solid #ccc",
+                  border: "1px solid #f5dfc4",
                   borderTop: "none",
-                  maxHeight: "300px",
+                  maxHeight: "200px",
                   overflowY: "auto",
-                  backgroundColor: "white",
+                  backgroundColor: "#FFF7ED",
                   zIndex: 10,
                   position: "absolute",
                   width: "100%",
                   borderRadius: "0 0 4px 4px",
                 }}
               >
-                {products.map((product) => (
+                {clients.map((client) => (
                   <div
-                    key={product._id}
+                    key={client._id}
                     className="dropdown-option"
-                    onClick={() => handleProductSelect(product)}
+                    onClick={() => handleClientSelect(client)}
                     style={{
                       padding: "10px",
-                      borderBottom: "1px solid #eee",
+                      borderBottom: "1px solid #f5dfc4",
                       cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "10px",
                     }}
                     onMouseEnter={(e) =>
                       (e.target.style.backgroundColor = "#f0f0f0")
                     }
                     onMouseLeave={(e) =>
-                      (e.target.style.backgroundColor = "white")
+                      (e.target.style.backgroundColor = "#FFF7ED")
                     }
                   >
-                    {product.imagesUrl && product.imagesUrl[0] && (
-                      <img
-                        src={product.imagesUrl[0]}
-                        alt={product.name}
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          objectFit: "cover",
-                          borderRadius: "4px",
-                        }}
-                      />
-                    )}
-                    <span>{product.name}</span>
+                    {client.name}
                   </div>
                 ))}
               </div>
             )}
           </div>
-        )}
-      </div>
 
-      {/* Right side - Selected Products */}
-      {selectedProducts.length > 0 && (
-        <div style={{ flex: "1", minWidth: "400px" }}>
-          <h3 style={{ marginTop: "0" }}>Selected Products</h3>
-          {selectedProducts.map((product) => (
+          {/* Client Info */}
+          {selectedClient && (
             <div
-              key={product._id}
-              className="product-card"
+              className="client-info"
               style={{
-                border: product.isSaved
-                  ? "2px solid #4CAF50"
-                  : "1px solid #ddd",
-                borderRadius: "8px",
+                marginBottom: "20px",
+                border: "1px solid #f5dfc4",
                 padding: "15px",
-                marginBottom: "15px",
-                backgroundColor: product.isSaved ? "#f8fff8" : "white",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                position: "relative",
+                backgroundColor: "#f9f0e7",
+                borderRadius: "4px",
               }}
             >
-              {product.isSaved && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "10px",
-                    right: "10px",
-                    background: "#4CAF50",
-                    color: "white",
-                    padding: "2px 8px",
-                    borderRadius: "12px",
-                    fontSize: "12px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  SAVED
-                </div>
-              )}
+              <h3 style={{ margin: "0 0 10px 0" }}>Selected Client</h3>
+              <p style={{ margin: "5px 0" }}>
+                <strong>Name:</strong> {selectedClient.name}
+              </p>
+              <p style={{ margin: "5px 0" }}>
+                <strong>Phone:</strong> {selectedClient.phone}
+              </p>
+              <p style={{ margin: "5px 0" }}>
+                <strong>Email:</strong> {selectedClient.email}
+              </p>
+            </div>
+          )}
 
+          {/* Product Dropdown */}
+          {selectedClient && (
+            <div
+              className="product-dropdown-container"
+              style={{ width: "100%", position: "relative" }}
+            >
               <div
+                className="dropdown-header"
+                onClick={() => setProductDropdownOpen(!productDropdownOpen)}
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
+                  border: "1px solid #f5dfc4",
+                  padding: "10px",
+                  cursor: "pointer",
+                  backgroundColor: "#f9f0e7",
+                  borderRadius: "4px",
                 }}
               >
-                <div style={{ display: "flex", gap: "15px", flex: "1" }}>
-                  {product.imagesUrl && product.imagesUrl[0] && (
-                    <img
-                      src={product.imagesUrl[0]}
-                      alt={product.name}
-                      style={{
-                        width: "80px",
-                        height: "80px",
-                        objectFit: "cover",
-                        borderRadius: "6px",
-                      }}
-                    />
-                  )}
-                  <div style={{ flex: "1" }}>
-                    <h4 style={{ margin: "0 0 10px 0", color: "#333" }}>
-                      {product.name}
-                    </h4>
-                    <p style={{ margin: "5px 0", color: "#666" }}>
-                      <strong>Current Stock:</strong> {product.currentStock}
-                    </p>
-                    <p style={{ margin: "5px 0", color: "#666" }}>
-                      <strong>Cost Price:</strong> ₹{product.costPrice}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => removeProduct(product._id)}
-                  style={{
-                    background: "#ff4444",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "4px",
-                    padding: "5px 10px",
-                    cursor: "pointer",
-                    fontSize: "12px",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.target.style.backgroundColor = "#cc0000")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.target.style.backgroundColor = "#ff4444")
-                  }
-                >
-                  Remove
-                </button>
+                Select a product
               </div>
 
-              {/* Supplier Selection and Form */}
+              {productDropdownOpen && (
+                <div
+                  className="dropdown-options"
+                  style={{
+                    border: "1px solid #f5dfc4",
+                    borderTop: "none",
+                    maxHeight: "300px",
+                    overflowY: "auto",
+                    backgroundColor: "#FFF7ED",
+                    zIndex: 10,
+                    position: "absolute",
+                    width: "100%",
+                    borderRadius: "0 0 4px 4px",
+                  }}
+                >
+                  {products.map((product) => (
+                    <div
+                      key={product._id}
+                      className="dropdown-option"
+                      onClick={() => handleProductSelect(product)}
+                      style={{
+                        padding: "10px",
+                        borderBottom: "1px solid #f5dfc4",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.target.style.backgroundColor = "#e8d5b7")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.target.style.backgroundColor = "#FFF7ED")
+                      }
+                    >
+                      {product.imagesUrl && product.imagesUrl[0] && (
+                        <img
+                          src={product.imagesUrl[0]}
+                          alt={product.name}
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            objectFit: "cover",
+                            borderRadius: "4px",
+                          }}
+                        />
+                      )}
+                      <span>{product.name}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Right side - Selected Products */}
+        {selectedProducts.length > 0 && (
+          <div style={{ flex: "1", minWidth: "400px" }}>
+            <h3 style={{ marginTop: "0" }}>Selected Products</h3>
+            {selectedProducts.map((product) => (
               <div
+                key={product._id}
+                className="product-card"
                 style={{
-                  marginTop: "15px",
-                  borderTop: "1px solid #eee",
-                  paddingTop: "15px",
+                  border: product.isSaved
+                    ? "2px solid #8b7355"
+                    : "1px solid #f5dfc4",
+                  borderRadius: "8px",
+                  padding: "15px",
+                  marginBottom: "15px",
+                  backgroundColor: product.isSaved ? "#f9f0e7" : "#FFF7ED",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                  position: "relative",
                 }}
               >
-                {/* Supplier Dropdown */}
-                <div style={{ marginBottom: "10px", position: "relative" }}>
-                  <label
+                {product.isSaved && (
+                  <div
                     style={{
-                      display: "block",
-                      marginBottom: "5px",
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                      background: "#4CAF50",
+                      color: "white",
+                      padding: "2px 8px",
+                      borderRadius: "12px",
+                      fontSize: "12px",
                       fontWeight: "bold",
                     }}
                   >
-                    Supplier *
-                  </label>
-                  {product.loadingSuppliers ? (
-                    <div style={{ padding: "10px", color: "#666" }}>
-                      Loading suppliers...
-                    </div>
-                  ) : (
-                    <>
-                      <div
-                        onClick={() => toggleSupplierDropdown(product._id)}
-                        style={{
-                          border: "1px solid #ccc",
-                          padding: "8px",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          backgroundColor: "#fafafa",
-                        }}
-                      >
-                        {product.selectedSupplier
-                          ? `${product.selectedSupplier.supplierId.name} - ₹${product.selectedSupplier.unitPrice}`
-                          : "Select a supplier"}
-                      </div>
-                      {product.supplierDropdownOpen && (
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: "100%",
-                            left: "0",
-                            right: "0",
-                            backgroundColor: "white",
-                            border: "1px solid #ccc",
-                            borderRadius: "4px",
-                            maxHeight: "150px",
-                            overflowY: "auto",
-                            zIndex: 5,
-                          }}
-                        >
-                          {product.suppliers.map((supplier) => (
-                            <div
-                              key={supplier._id}
-                              onClick={() => {
-                                updateProductField(
-                                  product._id,
-                                  "selectedSupplier",
-                                  supplier
-                                );
-                                toggleSupplierDropdown(product._id);
-                              }}
-                              style={{
-                                padding: "8px",
-                                cursor: "pointer",
-                                borderBottom: "1px solid #eee",
-                              }}
-                              onMouseEnter={(e) =>
-                                (e.target.style.backgroundColor = "#f0f0f0")
-                              }
-                              onMouseLeave={(e) =>
-                                (e.target.style.backgroundColor = "white")
-                              }
-                            >
-                              {supplier.supplierId.name} - ₹{supplier.unitPrice}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
+                    SAVED
+                  </div>
+                )}
 
-                {/* Quantity and Price Inputs */}
                 <div
                   style={{
                     display: "flex",
-                    gap: "10px",
-                    marginBottom: "15px",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
                   }}
                 >
-                  <div style={{ flex: "1" }}>
-                    <label
-                      style={{
-                        display: "block",
-                        marginBottom: "5px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Quantity *
-                    </label>
-                    <input
-                      type="number"
-                      value={product.quantity}
-                      onChange={(e) =>
-                        updateProductField(
-                          product._id,
-                          "quantity",
-                          e.target.value
-                        )
-                      }
-                      style={{
-                        width: "100%",
-                        padding: "8px",
-                        border: "1px solid #ccc",
-                        borderRadius: "4px",
-                      }}
-                      placeholder="Enter quantity"
-                    />
+                  <div style={{ display: "flex", gap: "15px", flex: "1" }}>
+                    {product.imagesUrl && product.imagesUrl[0] && (
+                      <img
+                        src={product.imagesUrl[0]}
+                        alt={product.name}
+                        style={{
+                          width: "80px",
+                          height: "80px",
+                          objectFit: "cover",
+                          borderRadius: "6px",
+                        }}
+                      />
+                    )}
+                    <div style={{ flex: "1" }}>
+                      <h4 style={{ margin: "0 0 10px 0", color: "#252525" }}>
+                        {product.name}
+                      </h4>
+                      <p style={{ margin: "5px 0", color: "#3d3d3d" }}>
+                        <strong>Current Stock:</strong> {product.currentStock}
+                      </p>
+                      <p style={{ margin: "5px 0", color: "#3d3d3d" }}>
+                        <strong>Cost Price:</strong> ₹{product.costPrice}
+                      </p>
+                    </div>
                   </div>
-                  <div style={{ flex: "1" }}>
-                    <label
-                      style={{
-                        display: "block",
-                        marginBottom: "5px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Unit Price
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={product.unitPrice}
-                      onChange={(e) =>
-                        updateProductField(
-                          product._id,
-                          "unitPrice",
-                          e.target.value
-                        )
-                      }
-                      style={{
-                        width: "100%",
-                        padding: "8px",
-                        border: "1px solid #ccc",
-                        borderRadius: "4px",
-                      }}
-                      placeholder="Unit price"
-                    />
-                  </div>
+                  <button
+                    onClick={() => removeProduct(product._id)}
+                    style={{
+                      background: "#ff4444",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      padding: "5px 10px",
+                      cursor: "pointer",
+                      fontSize: "12px",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#cc0000")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "#ff4444")
+                    }
+                  >
+                    Remove
+                  </button>
                 </div>
 
-                {/* Save Button */}
-                <button
-                  onClick={() => saveProduct(product)}
-                  disabled={!product.selectedSupplier || !product.quantity}
+                {/* Supplier Selection and Form */}
+                <div
                   style={{
-                    background:
-                      !product.selectedSupplier || !product.quantity
-                        ? "#ccc"
-                        : "#4CAF50",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "4px",
-                    padding: "10px 20px",
-                    cursor:
-                      !product.selectedSupplier || !product.quantity
-                        ? "not-allowed"
-                        : "pointer",
-                    fontWeight: "bold",
+                    marginTop: "15px",
+                    borderTop: "1px solid #f5dfc4",
+                    paddingTop: "15px",
                   }}
                 >
-                  {product.isSaved ? "Update" : "Save Product"}
-                </button>
-              </div>
-            </div>
-          ))}
+                  {/* Supplier Dropdown */}
+                  <div style={{ marginBottom: "10px", position: "relative" }}>
+                    <label
+                      style={{
+                        display: "block",
+                        marginBottom: "5px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Supplier *
+                    </label>
+                    {product.loadingSuppliers ? (
+                      <div style={{ padding: "10px", color: "#3d3d3d" }}>
+                        Loading suppliers...
+                      </div>
+                    ) : (
+                      <>
+                        <div
+                          onClick={() => toggleSupplierDropdown(product._id)}
+                          style={{
+                            border: "1px solid #f5dfc4",
+                            padding: "8px",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            backgroundColor: "#f9f0e7",
+                          }}
+                        >
+                          {product.selectedSupplier
+                            ? `${product.selectedSupplier.supplierId.name} - ₹${product.selectedSupplier.unitPrice}`
+                            : "Select a supplier"}
+                        </div>
+                        {product.supplierDropdownOpen && (
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: "100%",
+                              left: "0",
+                              right: "0",
+                              backgroundColor: "#FFF7ED",
+                              border: "1px solid #f5dfc4",
+                              borderRadius: "4px",
+                              maxHeight: "150px",
+                              overflowY: "auto",
+                              zIndex: 5,
+                            }}
+                          >
+                            {product.suppliers.map((supplier) => (
+                              <div
+                                key={supplier._id}
+                                onClick={() => {
+                                  updateProductField(
+                                    product._id,
+                                    "selectedSupplier",
+                                    supplier
+                                  );
+                                  toggleSupplierDropdown(product._id);
+                                }}
+                                style={{
+                                  padding: "8px",
+                                  cursor: "pointer",
+                                  borderBottom: "1px solid #f5dfc4",
+                                }}
+                                onMouseEnter={(e) =>
+                                  (e.target.style.backgroundColor = "##e8d5b7")
+                                }
+                                onMouseLeave={(e) =>
+                                  (e.target.style.backgroundColor = "#FFF7ED")
+                                }
+                              >
+                                {supplier.supplierId.name} - ₹
+                                {supplier.unitPrice}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
 
-          {/* Create Quotation Button */}
-          <div style={{ marginTop: "20px", textAlign: "right" }}>
-            <button
-              onClick={createClientQuotation}
-              disabled={quotationProducts.length === 0 || isCreatingQuotation}
-              style={{
-                background:
-                  quotationProducts.length === 0 || isCreatingQuotation
-                    ? "#ccc"
-                    : "#2196F3",
-                color: "white",
-                border: "none",
-                borderRadius: "6px",
-                padding: "12px 24px",
-                cursor:
-                  quotationProducts.length === 0 || isCreatingQuotation
-                    ? "not-allowed"
-                    : "pointer",
-                fontWeight: "bold",
-                fontSize: "16px",
-              }}
-            >
-              {isCreatingQuotation ? "Creating..." : "Create Client Quotation"}
-            </button>
+                  {/* Quantity and Price Inputs */}
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                      marginBottom: "15px",
+                    }}
+                  >
+                    <div style={{ flex: "1" }}>
+                      <label
+                        style={{
+                          display: "block",
+                          marginBottom: "5px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Quantity *
+                      </label>
+                      <input
+                        type="number"
+                        value={product.quantity}
+                        onChange={(e) =>
+                          updateProductField(
+                            product._id,
+                            "quantity",
+                            e.target.value
+                          )
+                        }
+                        style={{
+                          width: "100%",
+                          padding: "8px",
+                          border: "1px solid #f5dfc4",
+                          borderRadius: "4px",
+                        }}
+                        placeholder="Enter quantity"
+                      />
+                    </div>
+                    <div style={{ flex: "1" }}>
+                      <label
+                        style={{
+                          display: "block",
+                          marginBottom: "5px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Unit Price
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={product.unitPrice}
+                        onChange={(e) =>
+                          updateProductField(
+                            product._id,
+                            "unitPrice",
+                            e.target.value
+                          )
+                        }
+                        style={{
+                          width: "100%",
+                          padding: "8px",
+                          border: "1px solid #f5dfc4",
+                          borderRadius: "4px",
+                        }}
+                        placeholder="Unit price"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Save Button */}
+                  <button
+                    onClick={() => saveProduct(product)}
+                    disabled={!product.selectedSupplier || !product.quantity}
+                    style={{
+                      background:
+                        !product.selectedSupplier || !product.quantity
+                          ? "#f5dfc4"
+                          : "#8b7355",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      padding: "10px 20px",
+                      cursor:
+                        !product.selectedSupplier || !product.quantity
+                          ? "not-allowed"
+                          : "pointer",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {product.isSaved ? "Update" : "Save Product"}
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            {/* Create Quotation Button */}
+            <div style={{ marginTop: "20px", textAlign: "right" }}>
+              <button
+                onClick={createClientQuotation}
+                disabled={quotationProducts.length === 0 || isCreatingQuotation}
+                style={{
+                  background:
+                    quotationProducts.length === 0 || isCreatingQuotation
+                      ? "#f5dfc4"
+                      : "#2196F3",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "6px",
+                  padding: "12px 24px",
+                  cursor:
+                    quotationProducts.length === 0 || isCreatingQuotation
+                      ? "not-allowed"
+                      : "pointer",
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                }}
+              >
+                {isCreatingQuotation
+                  ? "Creating..."
+                  : "Create Client Quotation"}
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

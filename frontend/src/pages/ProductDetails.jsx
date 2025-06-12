@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/ProductDetails.css";
 const ProductDetails = () => {
@@ -40,6 +40,9 @@ const ProductDetails = () => {
   }
   return (
     <div className="product-details-container">
+      <nav className="breadcrumb">
+        <Link to="/products">Products</Link> &gt; <span>Product Details</span>
+      </nav>
       <div className="product-images-grid">
         {productinfo.imagesUrl.map((url, index) =>
           url ? (
