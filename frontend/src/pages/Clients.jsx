@@ -19,23 +19,44 @@ const Clients = () => {
   }, []);
 
   const clientElements = clients.map((client) => (
-    <div key={client._id}>
-      <Link to={`${client._id}`}>
-        <h3>{client.name}</h3>
-        <h4>{client.contactPerson}</h4>
-        <p>{client.phone}</p>
-        <p>{client.email}</p>
+    <div key={client._id} className="client-card">
+      <Link to={`${client._id}`} className="client-link">
+        <div className="client-header">
+          <h3 className="client-name">{client.name} </h3>
+          <span className="client-contact">{client.contactPerson}</span>
+        </div>
+        <div className="client-details">
+          <div className="detail-item">
+            <span className="detail-icon">📞</span>
+            <span className="detail-text">{client.phone}</span>
+          </div>
+          <div className="detail-item">
+            <span className="detail-icon">✉️</span>
+            <span className="detail-text">{client.email}</span>
+          </div>
+        </div>
       </Link>
     </div>
   ));
 
   return (
-    <div>
-      <h1>All Clients</h1>
-      <div>
-        <Link to={"add-new-client"}>Add new Client</Link>
+    <div className="clients-container">
+      <div className="clients-header">
+        <h1 className="page-title">All Clients</h1>
+
+        <Link to={"add-new-client"} className="add-client-btn">
+          <span className="btn-icon">+</span>Add new Client
+        </Link>
       </div>
-      <div>{clientElements}</div>
+      {clients.length > 0 ? (
+        <div className="clients-grid">{clientElements}</div>
+      ) : (
+        <div className="empty-state">
+          <div className="empty-icon">👥</div>
+          <h3>No clients found</h3>
+          <p>Start by adding your first client</p>
+        </div>
+      )}
     </div>
   );
 };

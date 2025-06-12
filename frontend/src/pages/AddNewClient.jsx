@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import "../styles/AddNewClient.css";
 const AddNewClient = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -12,9 +13,33 @@ const AddNewClient = () => {
   const [companyType, setCompanyType] = useState("");
   const [notes, setNotes] = useState("");
   const [preferredContact, setPreferredContact] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!name.trim()) newErrors.name = "Client name is required";
+    if (!contactPerson.trim())
+      newErrors.contactPerson = "Contact person name is required";
+    if (!phone.trim()) newErrors.phone = "Phone number is required";
+    if (!email.trim()) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(email))
+      newErrors.email = "Email format is invalid";
+    if (!address.trim()) newErrors.address = "Address is required";
+    if (!companyType) newErrors.companyType = "Company type is required";
+    if (!preferredContact)
+      newErrors.preferredContact = "Preferred contact method is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+    setIsSubmitting(true);
     try {
       const body = {
         name,
@@ -50,109 +75,264 @@ const AddNewClient = () => {
       }
     } catch (error) {
       console.log(error);
+      setErrors({ submit: "Failed to add client. Please try again." });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <>
-      <h2>Add New Client</h2>
-      <form onSubmit={onSubmitHandler}>
-        <label htmlFor="name">Enter name of client</label>
-        <input
-          type="text"
-          placeholder="Name of client"
-          name="name"
-          value={name}
-          required
-          onChange={(e) => setName(e.target.value)}
-        />
+    <div className="add-client-container">
+      <div className="form-header">
+        <div className="breadcrumb">
+          <Link to="/clients" className="breadcrumb-link">
+            Clients
+          </Link>
+          <span className="breadcrumb-separator">›</span>
+          <span className="breadcrumb-current">Add New Client</span>
+        </div>
+        <button onClick={() => navigate(-1)} className="back-btn">
+          ← Back to Clients
+        </button>
+      </div>
+      <div className="form-wrapper">
+        <div className="form-title-section">
+          <h1 className="form-title">Add New Client</h1>
+          <p className="form-subtitle">
+            Enter client information to create a new client record
+          </p>
+        </div>
+        {errors.submit && (
+          <div className="error-banner">
+            <span className="error-icon">⚠️</span>
+            {errors.submit}
+          </div>
+        )}
 
-        <label htmlFor="contactPerson">Enter name of client</label>
-        <input
-          type="text"
-          placeholder="Name of contact person"
-          name="contactPerson"
-          value={contactPerson}
-          required
-          onChange={(e) => setContactPerson(e.target.value)}
-        />
+        <form onSubmit={onSubmitHandler} className="client-form">
+          <div className="form-section">
+            <h3 className="section-title">Basic Information</h3>
+            <div className="form-grid">
+              <div className="form-group">
+                <label htmlFor="name" className="form-label">
+                  Client Name <span className="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="Enter client name"
+                  name="name"
+                  value={name}
+                  required
+                  className={`form-input ${errors.name ? "error" : ""}`}
+                  onChange={(e) => setName(e.target.value)}
+                />
+                {errors.name && (
+                  <span className="error-message">{errors.name}</span>
+                )}
+              </div>
 
-        <label htmlFor="phone">Enter phonbe no. of client</label>
-        <input
-          type="text"
-          placeholder="Phone no. of client"
-          name="phone"
-          value={phone}
-          required
-          onChange={(e) => setPhone(e.target.value)}
-        />
+              <div className="form-group">
+                <label htmlFor="contactPerson" className="form-label">
+                  Contact Person <span className="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="contactPerson"
+                  placeholder="Name of contact person"
+                  name="contactPerson"
+                  value={contactPerson}
+                  required
+                  className={`form-input ${
+                    errors.contactPerson ? "error" : ""
+                  }`}
+                  onChange={(e) => setContactPerson(e.target.value)}
+                />
+                {errors.contactPerson && (
+                  <span className="error-message">{errors.contactPerson}</span>
+                )}
+              </div>
+            </div>
+          </div>
 
-        <label htmlFor="email">Enter email of client</label>
-        <input
-          type="text"
-          placeholder="Email of client"
-          name="email"
-          value={email}
-          required
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          <div className="form-section">
+            <h3 className="section-title">Contact Information</h3>
+            <div className="form-grid">
+              <div className="form-group">
+                <label htmlFor="phone" className="form-label">
+                  Phone Number <span className="required">*</span>
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  placeholder="Enter phone number"
+                  name="phone"
+                  value={phone}
+                  required
+                  className={`form-input ${errors.phone ? "error" : ""}`}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+                {errors.phone && (
+                  <span className="error-message">{errors.phone}</span>
+                )}
+              </div>
 
-        <label htmlFor="address">Enter address of client</label>
-        <input
-          type="text"
-          placeholder="Address of client"
-          name="address"
-          value={address}
-          required
-          onChange={(e) => setAddress(e.target.value)}
-        />
+              <div className="form-group">
+                <label htmlFor="email" className="form-label">
+                  Email Address <span className="required">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Enter email address"
+                  name="email"
+                  value={email}
+                  required
+                  className={`form-input ${errors.email ? "error" : ""}`}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {errors.email && (
+                  <span className="error-message">{errors.email}</span>
+                )}
+              </div>
 
-        <label htmlFor="gstnumber">Enter gst number of client</label>
-        <input
-          type="text"
-          placeholder="gst number of client"
-          name="gstnumber"
-          value={gstNumber}
-          onChange={(e) => setGstNumber(e.target.value)}
-        />
+              <div className="form-group full-width">
+                <label htmlFor="address" className="form-label">
+                  Address <span className="required">*</span>
+                </label>
+                <textarea
+                  id="address"
+                  placeholder="Enter complete address"
+                  name="address"
+                  value={address}
+                  required
+                  rows="3"
+                  className={`form-textarea ${errors.address ? "error" : ""}`}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+                {errors.address && (
+                  <span className="error-message">{errors.address}</span>
+                )}
+              </div>
 
-        <label htmlFor="companyType">Select company type of client</label>
-        <select
-          name="companyType"
-          onChange={(e) => setCompanyType(e.target.value)}
-        >
-          <option selected disabled>
-            -- choose company type --
-          </option>
-          <option value="corporate">corporate</option>
-          <option value="individual">individual</option>
-        </select>
+              <div className="form-group">
+                <label htmlFor="preferredContact" className="form-label">
+                  Preferred Contact Method <span className="required">*</span>
+                </label>
+                <select
+                  id="preferredContact"
+                  name="preferredContact"
+                  value={preferredContact}
+                  required
+                  className={`form-select ${
+                    errors.preferredContact ? "error" : ""
+                  }`}
+                  onChange={(e) => setPreferredContact(e.target.value)}
+                >
+                  <option value="">
+                    -- Choose preferred contact method --
+                  </option>
+                  <option value="email">Email</option>
+                  <option value="phone">Phone</option>
+                </select>
+                {errors.preferredContact && (
+                  <span className="error-message">
+                    {errors.preferredContact}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
 
-        <label htmlFor="notes">Enter notes on client</label>
-        <textarea
-          type="text"
-          placeholder="Notes on client"
-          name="notes"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-        />
+          <div className="form-section">
+            <h3 className="section-title">Business Information</h3>
+            <div className="form-grid">
+              <div className="form-group">
+                <label htmlFor="companyType" className="form-label">
+                  Company Type <span className="required">*</span>
+                </label>
+                <select
+                  id="companyType"
+                  name="companyType"
+                  value={companyType}
+                  required
+                  className={`form-select ${errors.companyType ? "error" : ""}`}
+                  onChange={(e) => setCompanyType(e.target.value)}
+                >
+                  <option value="">-- Choose company type --</option>
+                  <option value="corporate">Corporate</option>
+                  <option value="individual">Individual</option>
+                </select>
+                {errors.companyType && (
+                  <span className="error-message">{errors.companyType}</span>
+                )}
+              </div>
 
-        <label htmlFor="preferredContact">
-          Select preferred contact mode of client
-        </label>
-        <select
-          name="preferredContact"
-          onChange={(e) => setPreferredContact(e.target.value)}
-        >
-          <option selected disabled>
-            -- choose preferred contact mode of client --
-          </option>
-          <option value="email">email</option>
-          <option value="phone">phone</option>
-        </select>
-        <button type="submit">ADD</button>
-      </form>
-    </>
+              <div className="form-group">
+                <label htmlFor="gstNumber" className="form-label">
+                  GST Number
+                  <span className="optional">(Optional)</span>
+                </label>
+                <input
+                  type="text"
+                  id="gstNumber"
+                  placeholder="Enter GST number"
+                  name="gstNumber"
+                  value={gstNumber}
+                  className="form-input"
+                  onChange={(e) => setGstNumber(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="form-section">
+            <h3 className="section-title">Additional Information</h3>
+            <div className="form-group full-width">
+              <label htmlFor="notes" className="form-label">
+                Notes <span className="optional">(Optional)</span>
+              </label>
+              <textarea
+                id="notes"
+                placeholder="Add any additional notes about the client"
+                name="notes"
+                value={notes}
+                rows="4"
+                className="form-textarea"
+                onChange={(e) => setNotes(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="form-actions">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="cancel-btn"
+              disabled={isSubmitting}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="submit-btn"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <span className="loading-spinner"></span>
+                  Adding Client...
+                </>
+              ) : (
+                <>
+                  <span className="submit-icon">+</span>
+                  Add Client
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 
