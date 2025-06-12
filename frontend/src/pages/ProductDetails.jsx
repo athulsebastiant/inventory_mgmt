@@ -2,11 +2,12 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import "../styles/ProductDetails.css";
 const ProductDetails = () => {
   const params = useParams();
   console.log(params);
   const [productinfo, setProductInfo] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   async function getProduct() {
     try {
       const response = await axios.get(
@@ -16,6 +17,8 @@ const ProductDetails = () => {
       setProductInfo(response.data);
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -23,33 +26,51 @@ const ProductDetails = () => {
     getProduct();
   }, [params.id]);
   console.log(productinfo);
+  if (loading) {
+    return (
+      <div className="product-details-container loading">
+        <div className="loader"></div>
+        <p>Loading product details...</p>
+      </div>
+    );
+  }
 
+  if (!productinfo) {
+    return <div className="product-details-container">Product not found.</div>;
+  }
   return (
-    <div>
-      {productinfo ? (
-        <div>
-          {productinfo.imagesUrl[0] ? (
-            <img src={productinfo.imagesUrl[0]} alt="" />
-          ) : null}
-          {productinfo.imagesUrl[1] ? (
-            <img src={productinfo.imagesUrl[1]} alt="" />
-          ) : null}
-          {productinfo.imagesUrl[2] ? (
-            <img src={productinfo.imagesUrl[2]} alt="" />
-          ) : null}
-          {productinfo.imagesUrl[3] ? (
-            <img src={productinfo.imagesUrl[3]} alt="" />
-          ) : null}
-          <h2>{productinfo.name}</h2>
-          <p>sku: {productinfo.sku}</p>
-          <p>{productinfo.category}</p>
-          <p>{productinfo.description}</p>
-          <p>current stock: {productinfo.currentStock}</p>
-          <p>reorder level: {productinfo.reorderLevel}</p>
-        </div>
-      ) : (
-        <h2></h2>
-      )}
+    <div className="product-details-container">
+      <div className="product-images-grid">
+        {productinfo.imagesUrl.map((url, index) =>
+          url ? (
+            <img key={index} src={url} alt={`Product ${index + 1}`} />
+          ) : null
+        )}
+      </div>
+      <div className="product-info">
+        <h2>{productinfo.name}</h2>
+        <p>
+          <strong>SKU:</strong> {productinfo.sku}
+        </p>
+        <p>
+          <strong>Category:</strong> {productinfo.category}
+        </p>
+        <p>
+          <strong>Description:</strong> {productinfo.description}
+        </p>
+        <p>
+          <strong>Current Stock:</strong> {productinfo.currentStock}
+        </p>
+        <p>
+          <strong>Initial Stock:</strong> {productinfo.initialStock}
+        </p>
+        <p>
+          <strong>Reorder Level:</strong> {productinfo.reorderLevel}
+        </p>
+        <p>
+          <strong>Cost Price:</strong> ${productinfo.costPrice}
+        </p>
+      </div>
     </div>
   );
 };

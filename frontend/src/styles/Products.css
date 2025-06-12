@@ -1,0 +1,121 @@
+/* Container */
+.product-list-container {
+    padding: 1.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f9f9f9;
+}
+
+.product-list-container h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+/* Add New Product Button */
+.new_product_link {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    margin-bottom: 2rem;
+    background-color: #3d3d3d;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.new_product_link:hover {
+    background-color: #D6B2A8;
+}
+
+/* Grid Layout */
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Product Card */
+.product-tile {
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.product-tile a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+/* Product Image */
+.product-tile img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    display: block;
+}
+
+/* Product Info */
+.product-info {
+    padding: 1rem;
+    background-color: #fefefe;
+}
+
+.product-info h3 {
+    font-size: 1.1rem;
+    color: #222;
+    margin-bottom: 0.5rem;
+}
+
+.product-info p {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 0.2rem 0;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 600px) {
+    .product-tile img {
+        height: 150px;
+    }
+
+    .product-info h3 {
+        font-size: 1rem;
+    }
+
+    .product-info p {
+        font-size: 0.85rem;
+    }
+}
+
+.loading-products {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 0;
+    color: #555;
+}
+
+.loader {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #ccc;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    } }

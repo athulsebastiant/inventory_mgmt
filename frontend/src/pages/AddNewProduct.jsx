@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import imgUpload from "../images/imgUpload.jpg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../styles/AddNewProduct.css";
 const AddNewProduct = () => {
   const navigate = useNavigate();
   const [image1, setImage1] = useState(false);

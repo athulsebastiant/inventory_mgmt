@@ -1,0 +1,121 @@
+/* Page Wrapper */
+h2 {
+    text-align: center;
+    margin: 2rem 0 1.5rem;
+    font-size: 2rem;
+    color: #333;
+}
+
+/* Form Layout */
+form {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Labels */
+form label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    color: #444;
+}
+
+/* Inputs */
+form input[type="text"],
+form input[type="file"] {
+    padding: 0.7rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+form input[type="text"]:focus {
+    border-color: #007bff;
+}
+
+/* Submit Button */
+form button[type="submit"] {
+    padding: 0.9rem 1.2rem;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    font-weight: 500;
+    font-size: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Image Upload Section */
+.imgContainer {
+    margin-top: 1rem;
+}
+
+.imgContainer p {
+    font-weight: 600;
+    margin-bottom: 0.7rem;
+    color: #333;
+}
+
+/* Image Grid */
+.imgContainer>div {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+/* Each Upload Box */
+.imgContainer label {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px dashed #ccc;
+    transition: border-color 0.3s ease;
+    background-color: #f7f7f7;
+}
+
+.imgContainer label:hover {
+    border-color: #007bff;
+}
+
+.imgContainer img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Hide File Input */
+.imgContainer input[type="file"] {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    form {
+        padding: 1.2rem;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    .imgContainer img {
+        height: 100px;
+    }
+}

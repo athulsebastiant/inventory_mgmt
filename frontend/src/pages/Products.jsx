@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import "../styles/Products.css";
 const Products = () => {
   const [products, setProducts] = React.useState([]);
+  const [loading, setLoading] = useState(true);
   const fetchProducts = async () => {
     try {
+      setLoading(true);
       const response = await axios.get("http://localhost:5000/api/products/");
 
       console.log("Products data", response.data);
@@ -13,6 +16,8 @@ const Products = () => {
     } catch (error) {
       console.log("Error fetching products", error);
       console.log("Error details:", error.response?.data || error.message);
+    } finally {
+      setLoading(false); // ⬅️ Stop loading
     }
   };
 
@@ -46,7 +51,14 @@ const Products = () => {
           Add New Product
         </Link>
       </div>
-      <div className="product-list">{productElements}</div>
+      {loading ? (
+        <div className="loading-products">
+          <div className="loader"></div>
+          <p>Loading products...</p>
+        </div>
+      ) : (
+        <div className="product-list">{productElements}</div>
+      )}
     </div>
   );
 };
