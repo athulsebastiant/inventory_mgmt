@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 const NewPurchase = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [selectedSupplier, setSelectedSupplier] = useState("");
@@ -163,6 +164,10 @@ const NewPurchase = () => {
   }
   return (
     <div className="supplier-select-container">
+      <nav className="breadcrumb">
+        <Link to="/purchasing">Purchases</Link> &gt;{" "}
+        <span>Add New Purchase</span>
+      </nav>
       {orderSuccesss && (
         <div className="success-message">
           ✅ Purchase order created successfully!

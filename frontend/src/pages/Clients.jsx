@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import "../styles/Clients.css";
 const Clients = () => {
   const [clients, setClients] = useState([]);
   const fetchClients = async () => {

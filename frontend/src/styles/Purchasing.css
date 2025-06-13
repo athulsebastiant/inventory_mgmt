@@ -1,0 +1,93 @@
+.purchasing-container {
+    padding: 2rem;
+    background-color: #FFF7ED;
+    font-family: Arial, sans-serif;
+    color: #252525;
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 2rem;
+    color: #6b5b47;
+}
+
+.add-button {
+    background-color: #8b7355;
+    color: #FFF7ED;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.add-button:hover {
+    background-color: #6b5b47;
+}
+
+.loading,
+.error {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+}
+
+.error {
+    color: red;
+}
+
+.purchase-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.purchase-card {
+    background-color: #f9f0e7;
+    border: 1px solid #f5dfc4;
+    border-radius: 12px;
+    padding: 1rem;
+    text-decoration: none;
+    color: #252525;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.purchase-card:hover {
+    border-color: #8b7355;
+    box-shadow: 0 4px 10px rgba(139, 115, 85, 0.2);
+}
+
+.purchase-id {
+    font-size: 1.1rem;
+    color: #6b5b47;
+}
+
+.supplier-name,
+.purchase-price,
+.status,
+.date {
+    margin-top: 0.5rem;
+    color: #3d3d3d;
+}
+
+.status {
+    font-weight: bold;
+}
+
+.status.pending {
+    color: #8b7355;
+}
+
+.status.delivered {
+    color: green;
+}
+
+.status.cancelled {
+    color: red;
+}

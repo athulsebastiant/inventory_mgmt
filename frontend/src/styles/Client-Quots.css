@@ -17,10 +17,11 @@
 }
 
 .header-content {
-    flex: 1;
+    flex: 0 1 auto;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: flex-end;
 }
 
 .page-title {
@@ -29,13 +30,18 @@
     color: #252525;
     margin: 0 0 0.5rem 0;
     letter-spacing: -0.02em;
+    line-height: 1.2;
+    text-align: left;
+    text-indent: 0;
 }
 
 .page-subtitle {
     font-size: 1.1rem;
     color: #3d3d3d;
     margin: 0;
-    font-weight: 400; }
+    font-weight: 400;
+    line-height: 1.4; 
+}
 
 .add-button {
     display: inline-flex;

@@ -216,6 +216,9 @@ const AddNewQuotation = () => {
         <Link to="/client-quotations">Quotations</Link> &gt;{" "}
         <span>Add New Quotation</span>
       </nav>
+      <h2 style={{ color: "#333", fontSize: "2rem", margin: "1rem 0" }}>
+        Add New Quotation
+      </h2>
       <div style={{ display: "flex", gap: "20px", padding: "20px" }}>
         {/* Left side - Client and Product Selection */}
         <div style={{ flex: "1", minWidth: "300px" }}>

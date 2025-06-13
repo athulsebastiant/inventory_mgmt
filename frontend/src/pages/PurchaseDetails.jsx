@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-
+import { useParams, Link } from "react-router-dom";
+import "../styles/PurchaseDetails.css";
 const PurchaseDetails = () => {
   const { id } = useParams();
   const [purchaseOrder, setPurchaseOrder] = useState(null);
@@ -26,84 +26,88 @@ const PurchaseDetails = () => {
     fetchPurchaseOrder();
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (loading) return <div className="pd-loading">Loading...</div>;
+  if (error) return <div className="pd-error">{error}</div>;
   if (!purchaseOrder) return null;
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Purchase Order ID: {purchaseOrder._id}</h2>
-      <h3>Supplier: {purchaseOrder.supplierId.name}</h3>
-      <label>
-        Status:&nbsp;
-        <select
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-          disabled={status === "delivered"}
-        >
-          <option value="pending">Pending</option>
-          <option value="delivered">Delivered</option>
-          <option value="cancelled">Cancelled</option>
-        </select>
-      </label>
-      <button
-        onClick={async () => {
-          try {
-            await axios.put(`http://localhost:5000/api/purchase-orders/${id}`, {
-              status,
-            });
-            alert("Status updated!");
-            const res = await axios.get(
-              `http://localhost:5000/api/purchase-orders/${id}`
-            );
-            setPurchaseOrder(res.data);
-            setStatus(res.data.status);
-          } catch (err) {
-            alert("Failed to update status");
-          }
-        }}
-        disabled={purchaseOrder.status === "delivered"}
-        style={{ marginLeft: "10px" }}
-      >
-        Update Status
-      </button>
+    <div className="pd-container">
+      <nav className="breadcrumb">
+        <Link to="/purchasing">Purchases</Link> &gt;{" "}
+        <span>Purchase Details</span>
+      </nav>
+      <div className="pd-header">
+        <h2>Purchase Order</h2>
+        <p className="pd-id">ID: {purchaseOrder._id}</p>
+        <p className="pd-supplier">Supplier: {purchaseOrder.supplierId.name}</p>
 
-      <h4>Items:</h4>
-      {purchaseOrder.items.map((item, index) => {
-        const product = item.productSupplierId.productId;
-        const imageUrl =
-          product.imagesUrl?.[0] || "https://via.placeholder.com/150";
-
-        return (
-          <div
-            key={item._id}
-            style={{
-              border: "1px solid #ccc",
-              marginBottom: "15px",
-              padding: "10px",
-              borderRadius: "8px",
-            }}
+        <div className="pd-status-section">
+          <label htmlFor="status">Status:</label>
+          <select
+            id="status"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            disabled={status === "delivered"}
+            className="pd-select"
           >
-            <h5>{product.name}</h5>
-            <img
-              src={imageUrl}
-              alt={product.name}
-              style={{
-                width: "150px",
-                height: "auto",
-                display: "block",
-                marginBottom: "10px",
-              }}
-            />
-            <p>
-              <strong>Unit Price:</strong> ${item.unitPrice.toFixed(2)}
-            </p>
-            <p>
-              <strong>Quantity:</strong> {item.quantityOrdered}
-            </p>
-          </div>
-        );
-      })}
+            <option value="pending">Pending</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <button
+            onClick={async () => {
+              try {
+                await axios.put(
+                  `http://localhost:5000/api/purchase-orders/${id}`,
+                  {
+                    status,
+                  }
+                );
+                alert("Status updated!");
+                const res = await axios.get(
+                  `http://localhost:5000/api/purchase-orders/${id}`
+                );
+                setPurchaseOrder(res.data);
+                setStatus(res.data.status);
+              } catch (err) {
+                alert("Failed to update status");
+              }
+            }}
+            disabled={purchaseOrder.status === "delivered"}
+            className="pd-button"
+          >
+            Update Status
+          </button>
+        </div>
+      </div>
+
+      <h3 className="pd-items-title">Ordered Items</h3>
+      <div className="pd-items-list">
+        {purchaseOrder.items.map((item) => {
+          const product = item.productSupplierId.productId;
+          const imageUrl =
+            product.imagesUrl?.[0] || "https://via.placeholder.com/150";
+
+          return (
+            <div key={item._id} className="pd-item-card">
+              <img
+                src={imageUrl}
+                alt={product.name}
+                className="pd-product-image"
+              />
+              <div className="pd-item-info">
+                <h4>{product.name}</h4>
+                <p>
+                  <strong>Unit Price:</strong> ₹{item.unitPrice.toFixed(2)}
+                </p>
+                <p>
+                  <strong>Quantity:</strong> {item.quantityOrdered}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
