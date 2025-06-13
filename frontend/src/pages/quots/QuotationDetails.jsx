@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import "../styles/QuotationDetails.css";
+import "../../styles/QuotationDetails.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const QuotationDetails = () => {
   const { id } = useParams();

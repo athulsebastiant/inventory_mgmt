@@ -5,8 +5,8 @@ import About from "./pages/About";
 import Products from "./pages/products/Products";
 import Clients from "./pages/clients/Clients";
 import Suppliers from "./pages/suppliers/Suppliers";
-import ClientQuots from "./pages/clients/ClientQuots";
-import Purchasing from "./pages/Purchasing";
+import ClientQuots from "./pages/quots/ClientQuots";
+import Purchasing from "./pages/purchase/Purchasing";
 import ProductDetails from "./pages/products/ProductDetails";
 import AddNewProduct from "./pages/products/AddNewProduct";
 import AddNewClient from "./pages/clients/AddNewClient";
@@ -15,10 +15,10 @@ import SupplierDetails from "./pages/suppliers/SupplierDetails";
 import AddNewSupplier from "./pages/suppliers/AddNewSupplier";
 import LinkSupplierProduct from "./pages/suppliers/LinkSupplierProduct";
 import ViewSuppliersLinks from "./pages/suppliers/ViewSuppliersLinks";
-import NewPurchase from "./pages/NewPurchase";
-import PurchaseDetails from "./pages/PurchaseDetails";
-import AddNewQuotation from "./pages/AddNewQuotation";
-import QuotationDetails from "./pages/QuotationDetails";
+import NewPurchase from "./pages/purchase/NewPurchase";
+import PurchaseDetails from "./pages/purchase/PurchaseDetails";
+import AddNewQuotation from "./pages/quots/AddNewQuotation";
+import QuotationDetails from "./pages/quots/QuotationDetails";
 const App = () => {
   return (
     <BrowserRouter>

@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "../styles/NewPurchase.css";
+import "../../styles/NewPurchase.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const NewPurchase = () => {
   const [suppliers, setSuppliers] = useState([]);

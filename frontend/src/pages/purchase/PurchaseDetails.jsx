@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
-import "../styles/PurchaseDetails.css";
+import "../../styles/PurchaseDetails.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const PurchaseDetails = () => {
   const { id } = useParams();
