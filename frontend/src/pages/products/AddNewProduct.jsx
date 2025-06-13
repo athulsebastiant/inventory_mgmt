@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import imgUpload from "../images/imgUpload.jpg";
+import imgUpload from "../../images/imgUpload.jpg";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import "../styles/AddNewProduct.css";
+import "../../styles/AddNewProduct.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const AddNewProduct = () => {
   const navigate = useNavigate();
   const [image1, setImage1] = useState(false);
@@ -38,7 +39,7 @@ const AddNewProduct = () => {
       image4 && formData.append("image4", image4);
 
       const response = await axios.post(
-        "http://localhost:5000/api/products/",
+        `${backendUrl}/api/products/`,
         formData
       );
       if (response.status === 201) {

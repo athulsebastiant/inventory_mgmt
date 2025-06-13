@@ -4,15 +4,14 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import "../styles/Purchasing.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Purchasing = () => {
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const fetchPurchases = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/purchase-orders/"
-      );
+      const response = await axios.get(`${backendUrl}/api/purchase-orders/`);
       console.log(response.data);
       setPurchases(response.data);
       setError("");

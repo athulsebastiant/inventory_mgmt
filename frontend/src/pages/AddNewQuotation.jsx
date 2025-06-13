@@ -10,16 +10,16 @@ const AddNewQuotation = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [quotationProducts, setQuotationProducts] = useState([]);
   const [isCreatingQuotation, setIsCreatingQuotation] = useState(false);
-
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     // Fetch clients
-    fetch("http://localhost:5000/api/clients/")
+    fetch(`${backendUrl}/api/clients/`)
       .then((res) => res.json())
       .then((data) => setClients(data))
       .catch((err) => console.error("Error fetching clients:", err));
 
     // Fetch products
-    fetch("http://localhost:5000/api/products/")
+    fetch(`${backendUrl}/api/products/`)
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error("Error fetching products:", err));
@@ -48,7 +48,7 @@ const AddNewQuotation = () => {
       };
 
       // Fetch suppliers for this product
-      fetch(`http://localhost:5000/api/productSuppliers/product/${product._id}`)
+      fetch(`${backendUrl}/api/productSuppliers/product/${product._id}`)
         .then((res) => res.json())
         .then((suppliers) => {
           setSelectedProducts((prev) =>
@@ -121,16 +121,13 @@ const AddNewQuotation = () => {
         products: quotationProducts.map(({ productId, ...rest }) => rest),
       };
 
-      const response = await fetch(
-        "http://localhost:5000/api/client-quotations/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(quotationData),
-        }
-      );
+      const response = await fetch(`${backendUrl}/api/client-quotations/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(quotationData),
+      });
 
       const result = await response.json();
 

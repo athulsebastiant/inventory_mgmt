@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 import "../styles/PurchaseDetails.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const PurchaseDetails = () => {
   const { id } = useParams();
   const [purchaseOrder, setPurchaseOrder] = useState(null);
@@ -12,7 +13,7 @@ const PurchaseDetails = () => {
     const fetchPurchaseOrder = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/purchase-orders/${id}`
+          `${backendUrl}/api/purchase-orders/${id}`
         );
         setPurchaseOrder(response.data);
         setStatus(response.data.status);
@@ -57,15 +58,12 @@ const PurchaseDetails = () => {
           <button
             onClick={async () => {
               try {
-                await axios.put(
-                  `http://localhost:5000/api/purchase-orders/${id}`,
-                  {
-                    status,
-                  }
-                );
+                await axios.put(`${backendUrl}/api/purchase-orders/${id}`, {
+                  status,
+                });
                 alert("Status updated!");
                 const res = await axios.get(
-                  `http://localhost:5000/api/purchase-orders/${id}`
+                  `${backendUrl}/api/purchase-orders/${id}`
                 );
                 setPurchaseOrder(res.data);
                 setStatus(res.data.status);

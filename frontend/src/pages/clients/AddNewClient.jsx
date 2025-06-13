@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import "../styles/AddNewClient.css";
+
+import "../../styles/AddNewClient.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const AddNewClient = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -53,10 +55,7 @@ const AddNewClient = () => {
         preferredContactMethod: preferredContact,
       };
 
-      const response = await axios.post(
-        "http://localhost:5000/api/clients/",
-        body
-      );
+      const response = await axios.post(`${backendUrl}/api/clients/`, body);
       if (response.status === 201) {
         console.log("Client added successfully:", response.data);
         setName("");

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "../styles/Products.css";
+import "../../styles/Products.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Products = () => {
   const [products, setProducts] = React.useState([]);
   const [loading, setLoading] = useState(true);
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5000/api/products/");
+      const response = await axios.get(`${backendUrl}/api/products/`);
 
       console.log("Products data", response.data);
       setProducts(response.data);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/QuotationDetails.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const QuotationDetails = () => {
   const { id } = useParams();
   const [quotation, setQuotation] = useState(null);
@@ -10,9 +11,7 @@ const QuotationDetails = () => {
   const [isFrozen, setIsFrozen] = useState(false);
   const fetchQuotation = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:5000/api/client-quotations/${id}`
-      );
+      const res = await axios.get(`${backendUrl}/api/client-quotations/${id}`);
       setQuotation(res.data);
       if (res.data.status === "fulfilled") {
         setIsFrozen(true);
@@ -28,7 +27,7 @@ const QuotationDetails = () => {
   const handleApprove = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/client-quotations/${id}/approve`
+        `${backendUrl}/api/client-quotations/${id}/approve`
       );
 
       setMessage(res.data.message);
@@ -43,7 +42,7 @@ const QuotationDetails = () => {
   const handleFulfill = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/client-quotations/${id}/fulfill`
+        `${backendUrl}/api/client-quotations/${id}/fulfill`
       );
 
       setMessage(res.data.message);

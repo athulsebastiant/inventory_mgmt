@@ -2,7 +2,8 @@ import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import "../styles/Client-Quots.css";
+import "../../styles/Client-Quots.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const ClientQuots = () => {
   const [quotations, setQuotations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,9 +16,7 @@ const ClientQuots = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await axios.get(
-        "http://localhost:5000/api/client-quotations/"
-      );
+      const res = await axios.get(`${backendUrl}/api/client-quotations/`);
       setQuotations(res.data);
     } catch (err) {
       setError("Failed to fetch quotations. Please try again.");

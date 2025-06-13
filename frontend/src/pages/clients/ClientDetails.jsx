@@ -2,7 +2,8 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import "../styles/ClientDetails.css";
+import "../../styles/ClientDetails.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const ClientDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const ClientDetails = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:5000/api/clients/${params.id}`
+        `${backendUrl}/api/clients/${params.id}`
       );
       setClientInfo(response.data);
     } catch (error) {

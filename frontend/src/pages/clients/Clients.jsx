@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/Clients.css";
+import "../../styles/Clients.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Clients = () => {
   const [clients, setClients] = useState([]);
   const fetchClients = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/clients/");
+      const response = await axios.get(`${backendUrl}/api/clients/`);
       setClients(response.data);
     } catch (error) {
       console.log(error);

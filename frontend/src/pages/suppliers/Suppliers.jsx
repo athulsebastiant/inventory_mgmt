@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "../styles/Supplier.css";
+import "../../styles/Supplier.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,7 +10,7 @@ const Suppliers = () => {
   const fetchSuppliers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5000/api/suppliers/");
+      const response = await axios.get(`${backendUrl}/api/suppliers/`);
       setSuppliers(response.data);
       setError("");
     } catch (error) {

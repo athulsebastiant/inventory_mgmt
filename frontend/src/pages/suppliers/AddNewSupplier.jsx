@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import "../styles/AddNewSupplier.css";
+import "../../styles/AddNewSupplier.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const AddNewSupplier = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -22,10 +23,7 @@ const AddNewSupplier = () => {
         address,
       };
 
-      const response = await axios.post(
-        "http://localhost:5000/api/suppliers/",
-        body
-      );
+      const response = await axios.post(`${backendUrl}/api/suppliers/`, body);
 
       if (response.status === 201) {
         setName("");

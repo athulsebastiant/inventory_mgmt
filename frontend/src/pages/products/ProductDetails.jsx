@@ -2,7 +2,8 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import "../styles/ProductDetails.css";
+import "../../styles/ProductDetails.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const ProductDetails = () => {
   const params = useParams();
   console.log(params);
@@ -11,7 +12,7 @@ const ProductDetails = () => {
   async function getProduct() {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/products/${params.id}`
+        `${backendUrl}/api/products/${params.id}`
       );
       console.log(response);
       setProductInfo(response.data);
@@ -58,7 +59,7 @@ const ProductDetails = () => {
         <p>
           <strong>Category:</strong> {productinfo.category}
         </p>
-        <p>
+        <p id="desc">
           <strong>Description:</strong> {productinfo.description}
         </p>
         <p>

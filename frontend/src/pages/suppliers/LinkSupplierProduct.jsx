@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
-import "../styles/LinkSupplierProduct.css";
+import "../../styles/LinkSupplierProduct.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const LinkSupplierProduct = () => {
   const supplier = useOutletContext();
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const LinkSupplierProduct = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:5000/api/products/");
+        const response = await axios.get(`${backendUrl}/api/products/`);
         const data = response.data;
         setProducts(data);
         setError(null);
@@ -55,7 +56,7 @@ const LinkSupplierProduct = () => {
         leadTimeDays,
       };
       const response = await axios.post(
-        "http://localhost:5000/api/productSuppliers/",
+        `${backendUrl}/api/productSuppliers/`,
         body
       );
       if (response.status === 201) {

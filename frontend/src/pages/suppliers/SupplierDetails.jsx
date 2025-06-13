@@ -2,7 +2,8 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { NavLink, useParams, Outlet, Link } from "react-router-dom";
 import axios from "axios";
-import "../styles/SupplierDetails.css";
+import "../../styles/SupplierDetails.css";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const SupplierDetails = () => {
   const params = useParams();
   const [supplierInfo, setSupplierInfo] = useState(null);
@@ -13,7 +14,7 @@ const SupplierDetails = () => {
     setError("");
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/suppliers/${params.id}`
+        `${backendUrl}/api/suppliers/${params.id}`
       );
       setSupplierInfo(response.data);
     } catch (error) {
