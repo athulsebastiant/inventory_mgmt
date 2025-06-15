@@ -17,7 +17,8 @@ const AddNewClient = () => {
   const [preferredContact, setPreferredContact] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
-
+  const [isDemoMode, setIsDemoMode] = useState(true);
+  const [message, setMessage] = useState("");
   const validateForm = () => {
     const newErrors = {};
 
@@ -38,6 +39,12 @@ const AddNewClient = () => {
   };
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    if (isDemoMode) {
+      setMessage(
+        "Adding clients is restricted for demo purposes. You can view existing data."
+      );
+      return; // Stop execution if in demo mode
+    }
     if (!validateForm()) {
       return;
     }
@@ -329,6 +336,15 @@ const AddNewClient = () => {
               )}
             </button>
           </div>
+          {message && (
+            <div
+              className={`message-box ${
+                isDemoMode ? "demo-message" : "success-message"
+              }`}
+            >
+              {message}
+            </div>
+          )}
         </form>
       </div>
     </div>

@@ -11,8 +11,16 @@ const AddNewSupplier = () => {
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isDemoMode, setIsDemoMode] = useState(true);
+  const [message, setMessage] = useState("");
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    if (isDemoMode) {
+      setMessage(
+        "Creating suppliers is restricted for demo purposes. You can view existing data."
+      );
+      return; // Stop execution if in demo mode
+    }
     setLoading(true);
     setError("");
     try {
@@ -91,6 +99,15 @@ const AddNewSupplier = () => {
         <button type="submit" className="primary-button" disabled={loading}>
           {loading ? "Adding..." : "ADD"}
         </button>
+        {message && (
+          <div
+            className={`message-box ${
+              isDemoMode ? "demo-message" : "success-message"
+            }`}
+          >
+            {message}
+          </div>
+        )}
       </form>
     </div>
   );

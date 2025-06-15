@@ -19,9 +19,16 @@ const AddNewProduct = () => {
   const [reorderLevel, setReorderLevel] = useState("");
   const [costPrice, setCostPrice] = useState("");
   const [category, setCategory] = useState("");
-
+  const [isDemoMode, setIsDemoMode] = useState(true);
+  const [message, setMessage] = useState("");
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    if (isDemoMode) {
+      setMessage(
+        "Adding products is restricted for demo purposes. You can view existing data."
+      );
+      return; // Stop execution if in demo mode
+    }
     try {
       const formData = new FormData();
       formData.append("name", name);
@@ -209,6 +216,15 @@ const AddNewProduct = () => {
           </div>
         </div>
         <button type="submit">ADD</button>
+        {message && (
+          <div
+            className={`message-box ${
+              isDemoMode ? "demo-message" : "success-message"
+            }`}
+          >
+            {message}
+          </div>
+        )}
       </form>
     </>
   );

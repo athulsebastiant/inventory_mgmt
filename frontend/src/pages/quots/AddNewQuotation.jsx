@@ -11,6 +11,8 @@ const AddNewQuotation = () => {
   const [quotationProducts, setQuotationProducts] = useState([]);
   const [isCreatingQuotation, setIsCreatingQuotation] = useState(false);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const [isDemoMode, setIsDemoMode] = useState(true);
+  const [message, setMessage] = useState("");
   useEffect(() => {
     // Fetch clients
     fetch(`${backendUrl}/api/clients/`)
@@ -108,6 +110,12 @@ const AddNewQuotation = () => {
   };
 
   const createClientQuotation = async () => {
+    if (isDemoMode) {
+      setMessage(
+        "Creating quotations is restricted for demo purposes. You can view existing data."
+      );
+      return; // Stop execution if in demo mode
+    }
     if (quotationProducts.length === 0) {
       alert("Please save at least one product before creating quotation");
       return;
@@ -683,6 +691,15 @@ const AddNewQuotation = () => {
                   : "Create Client Quotation"}
               </button>
             </div>
+            {message && (
+              <div
+                className={`message-box ${
+                  isDemoMode ? "demo-message" : "success-message"
+                }`}
+              >
+                {message}
+              </div>
+            )}
           </div>
         )}
       </div>

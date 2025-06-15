@@ -24,7 +24,8 @@ const NewPurchase = () => {
   const [submittingOrder, setSubmittingOrder] = useState(false);
   const [orderSuccesss, setOrderSuccess] = useState(false);
   const [orderError, setOrderError] = useState(null);
-
+  const [isDemoMode, setIsDemoMode] = useState(true);
+  const [message, setMessage] = useState("");
   const fetchSuppliers = async () => {
     try {
       setLoading(true);
@@ -110,6 +111,12 @@ const NewPurchase = () => {
   };
 
   const handlePostPurchaseOrder = async () => {
+    if (isDemoMode) {
+      setMessage(
+        "Purchasing products is restricted for demo purposes. You can view existing data."
+      );
+      return; // Stop execution if in demo mode
+    }
     if (!selectedSupplier || selectedItems.length === 0) {
       alert("Please select a supplier and add at least one item");
       return;
@@ -402,6 +409,15 @@ const NewPurchase = () => {
               {submittingOrder ? "Creating Order..." : "Post Purchase Order"}
             </button>
           </div>
+          {message && (
+            <div
+              className={`message-box ${
+                isDemoMode ? "demo-message" : "success-message"
+              }`}
+            >
+              {message}
+            </div>
+          )}
         </div>
       )}
     </div>
