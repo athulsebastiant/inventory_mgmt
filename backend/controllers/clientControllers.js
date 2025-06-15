@@ -53,3 +53,12 @@ export const deleteClient = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const getClientCount = async (req, res) => {
+  try {
+    const count = await Client.countDocuments(); // or .estimatedDocumentCount() if approximation is fine
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

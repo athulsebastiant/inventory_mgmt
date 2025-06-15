@@ -12,13 +12,11 @@ export const createSupplier = async (req, res) => {
       address: address || "N/A",
     });
     const savedSupplier = await supplier.save();
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Supplier created",
-        supplier: savedSupplier,
-      });
+    res.status(201).json({
+      success: true,
+      message: "Supplier created",
+      supplier: savedSupplier,
+    });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
@@ -57,5 +55,14 @@ export const deleteSupplier = async (req, res) => {
     res.json({ message: "Supplier deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+export const getSupplierCount = async (req, res) => {
+  try {
+    const count = await Supplier.countDocuments(); // or .estimatedDocumentCount() if approximation is fine
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

@@ -151,3 +151,12 @@ export const deletePurchaseOrder = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
+
+export const getPurchaseOrderCount = async (req, res) => {
+  try {
+    const count = await PurchaseOrder.countDocuments(); // or .estimatedDocumentCount() if approximation is fine
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

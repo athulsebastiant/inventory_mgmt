@@ -17,5 +17,9 @@ router.post(
 );
 router.put("/:id", productControllers.updateProduct);
 router.delete("/:id", productControllers.deleteProduct);
-
+router.get("/products/count", productControllers.getProductCount);
+router.get(
+  "/products/total-inv-cost",
+  productControllers.getTotalInventoryCost
+);
 export default router;

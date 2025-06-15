@@ -423,3 +423,31 @@ export const deleteQuotation = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const getQuotationCount = async (req, res) => {
+  try {
+    const count = await Quotation.countDocuments(); // or .estimatedDocumentCount() if approximation is fine
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getTotalQuotValue = async (req, res) => {
+  try {
+    const totalQuotationValue = await Quotation.aggregate([
+      { $unwind: "$products" },
+      {
+        $group: {
+          _id: null,
+          totalValue: {
+            $sum: { $multiply: ["$products.quantity", "$products.unitPrice"] },
+          },
+        },
+      },
+    ]);
+    res.json({ totalQuotationValue });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

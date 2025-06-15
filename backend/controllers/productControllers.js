@@ -101,3 +101,28 @@ export const deleteProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getProductCount = async (req, res) => {
+  try {
+    const count = await Product.countDocuments(); // or .estimatedDocumentCount() if approximation is fine
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getTotalInventoryCost = async (req, res) => {
+  try {
+    const totalValue = await Product.aggregate([
+      {
+        $group: {
+          _id: null,
+          value: { $sum: { $multiply: ["$currentStock", "$costPrice"] } },
+        },
+      },
+    ]);
+    res.json({ totalValue });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

@@ -4,6 +4,7 @@ import {
   getSuppliers,
   getSupplierById,
   updateSupplier,
+  getSupplierCount,
   deleteSupplier,
 } from "../controllers/supplierControllers.js";
 
@@ -14,5 +15,6 @@ router.get("/", getSuppliers);
 router.get("/:id", getSupplierById);
 router.put("/:id", updateSupplier);
 router.delete("/:id", deleteSupplier);
+router.get("/suppliers/count", getSupplierCount);
 
 export default router;

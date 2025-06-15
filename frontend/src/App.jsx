@@ -19,11 +19,13 @@ import NewPurchase from "./pages/purchase/NewPurchase";
 import PurchaseDetails from "./pages/purchase/PurchaseDetails";
 import AddNewQuotation from "./pages/quots/AddNewQuotation";
 import QuotationDetails from "./pages/quots/QuotationDetails";
+import Home from "./pages/Home";
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="products" element={<Products />} />
           <Route path="products/:id" element={<ProductDetails />} />
