@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import "../../styles/AddNewQuotation.css";
 const AddNewQuotation = () => {
   const navigate = useNavigate();
   const [clients, setClients] = useState([]);
@@ -221,60 +222,26 @@ const AddNewQuotation = () => {
         <Link to="/client-quotations">Quotations</Link> &gt;{" "}
         <span>Add New Quotation</span>
       </nav>
-      <h2 style={{ color: "#333", fontSize: "2rem", margin: "1rem 0" }}>
-        Add New Quotation
-      </h2>
-      <div style={{ display: "flex", gap: "20px", padding: "20px" }}>
+      <h2 className="main-header">Add New Quotation</h2>
+      <div className="main-container">
         {/* Left side - Client and Product Selection */}
-        <div style={{ flex: "1", minWidth: "300px" }}>
+        <div className="client-product-container">
           {/* Client Dropdown */}
-          <div
-            className="client-dropdown-container"
-            style={{
-              width: "100%",
-              marginBottom: "20px",
-              position: "relative",
-            }}
-          >
+          <div className="client-dropdown-container">
             <div
               className="dropdown-header"
               onClick={() => setClientDropdownOpen(!clientDropdownOpen)}
-              style={{
-                border: "1px solid #f5dfc4",
-                padding: "10px",
-                cursor: "pointer",
-                backgroundColor: "#f9f0e7",
-                borderRadius: "4px",
-              }}
             >
               {selectedClient ? selectedClient.name : "Select a client"}
             </div>
 
             {clientDropdownOpen && (
-              <div
-                className="dropdown-options"
-                style={{
-                  border: "1px solid #f5dfc4",
-                  borderTop: "none",
-                  maxHeight: "200px",
-                  overflowY: "auto",
-                  backgroundColor: "#FFF7ED",
-                  zIndex: 10,
-                  position: "absolute",
-                  width: "100%",
-                  borderRadius: "0 0 4px 4px",
-                }}
-              >
+              <div className="dropdown-options">
                 {clients.map((client) => (
                   <div
                     key={client._id}
                     className="dropdown-option"
                     onClick={() => handleClientSelect(client)}
-                    style={{
-                      padding: "10px",
-                      borderBottom: "1px solid #f5dfc4",
-                      cursor: "pointer",
-                    }}
                     onMouseEnter={(e) =>
                       (e.target.style.backgroundColor = "#f0f0f0")
                     }
@@ -291,24 +258,15 @@ const AddNewQuotation = () => {
 
           {/* Client Info */}
           {selectedClient && (
-            <div
-              className="client-info"
-              style={{
-                marginBottom: "20px",
-                border: "1px solid #f5dfc4",
-                padding: "15px",
-                backgroundColor: "#f9f0e7",
-                borderRadius: "4px",
-              }}
-            >
-              <h3 style={{ margin: "0 0 10px 0" }}>Selected Client</h3>
-              <p style={{ margin: "5px 0" }}>
+            <div className="client-info">
+              <h3>Selected Client</h3>
+              <p>
                 <strong>Name:</strong> {selectedClient.name}
               </p>
-              <p style={{ margin: "5px 0" }}>
+              <p>
                 <strong>Phone:</strong> {selectedClient.phone}
               </p>
-              <p style={{ margin: "5px 0" }}>
+              <p>
                 <strong>Email:</strong> {selectedClient.email}
               </p>
             </div>
@@ -316,52 +274,21 @@ const AddNewQuotation = () => {
 
           {/* Product Dropdown */}
           {selectedClient && (
-            <div
-              className="product-dropdown-container"
-              style={{ width: "100%", position: "relative" }}
-            >
+            <div className="product-dropdown-container">
               <div
                 className="dropdown-header"
                 onClick={() => setProductDropdownOpen(!productDropdownOpen)}
-                style={{
-                  border: "1px solid #f5dfc4",
-                  padding: "10px",
-                  cursor: "pointer",
-                  backgroundColor: "#f9f0e7",
-                  borderRadius: "4px",
-                }}
               >
                 Select a product
               </div>
 
               {productDropdownOpen && (
-                <div
-                  className="dropdown-options"
-                  style={{
-                    border: "1px solid #f5dfc4",
-                    borderTop: "none",
-                    maxHeight: "300px",
-                    overflowY: "auto",
-                    backgroundColor: "#FFF7ED",
-                    zIndex: 10,
-                    position: "absolute",
-                    width: "100%",
-                    borderRadius: "0 0 4px 4px",
-                  }}
-                >
+                <div className="dropdown-options">
                   {products.map((product) => (
                     <div
                       key={product._id}
                       className="dropdown-option"
                       onClick={() => handleProductSelect(product)}
-                      style={{
-                        padding: "10px",
-                        borderBottom: "1px solid #f5dfc4",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "10px",
-                      }}
                       onMouseEnter={(e) =>
                         (e.target.style.backgroundColor = "#e8d5b7")
                       }
@@ -392,7 +319,15 @@ const AddNewQuotation = () => {
 
         {/* Right side - Selected Products */}
         {selectedProducts.length > 0 && (
-          <div style={{ flex: "1", minWidth: "400px" }}>
+          <div
+            style={{
+              flex: "1",
+              minWidth: "400px",
+              maxHeight: "70vh",
+              overflowY: "auto",
+              paddingRight: "10px",
+            }}
+          >
             <h3 style={{ marginTop: "0" }}>Selected Products</h3>
             {selectedProducts.map((product) => (
               <div
@@ -663,43 +598,40 @@ const AddNewQuotation = () => {
                 </div>
               </div>
             ))}
-
-            {/* Create Quotation Button */}
-            <div style={{ marginTop: "20px", textAlign: "right" }}>
-              <button
-                onClick={createClientQuotation}
-                disabled={quotationProducts.length === 0 || isCreatingQuotation}
-                style={{
-                  background:
-                    quotationProducts.length === 0 || isCreatingQuotation
-                      ? "#f5dfc4"
-                      : "#2196F3",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "6px",
-                  padding: "12px 24px",
-                  cursor:
-                    quotationProducts.length === 0 || isCreatingQuotation
-                      ? "not-allowed"
-                      : "pointer",
-                  fontWeight: "bold",
-                  fontSize: "16px",
-                }}
-              >
-                {isCreatingQuotation
-                  ? "Creating..."
-                  : "Create Client Quotation"}
-              </button>
-            </div>
-            {message && (
-              <div
-                className={`message-box ${
-                  isDemoMode ? "demo-message" : "success-message"
-                }`}
-              >
-                {message}
-              </div>
-            )}
+          </div>
+        )}
+        {/* Create Quotation Button */}
+        <div style={{ textAlign: "right" }}>
+          <button
+            onClick={createClientQuotation}
+            disabled={quotationProducts.length === 0 || isCreatingQuotation}
+            style={{
+              background:
+                quotationProducts.length === 0 || isCreatingQuotation
+                  ? "#f5dfc4"
+                  : "#2196F3",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              padding: "12px 24px",
+              cursor:
+                quotationProducts.length === 0 || isCreatingQuotation
+                  ? "not-allowed"
+                  : "pointer",
+              fontWeight: "bold",
+              fontSize: "16px",
+            }}
+          >
+            {isCreatingQuotation ? "Creating..." : "Create Client Quotation"}
+          </button>
+        </div>
+        {message && (
+          <div
+            className={`message-box ${
+              isDemoMode ? "demo-message" : "success-message"
+            }`}
+          >
+            {message}
           </div>
         )}
       </div>

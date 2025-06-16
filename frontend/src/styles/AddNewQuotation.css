@@ -1,0 +1,100 @@
+.main-header{
+    color: #333;
+     font-size: 2rem;
+     margin: 1rem 0;
+}
+
+.main-container{
+    display: flex;
+     gap: 20px;
+      padding: 20px;
+}
+.client-product-container{
+    flex: 1;
+     min-width: 300px;
+}
+
+.client-dropdown-container{
+    width: 100%;
+            margin-bottom: 20px;
+            position: relative;
+}
+
+.dropdown-header{
+    border: 1px solid #f5dfc4;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #f9f0e7;
+            border-radius: 4px;
+}
+
+.dropdown-options{
+    border: 1px solid #f5dfc4;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #FFF7ED;
+            z-index:  10;
+            position: absolute;
+            width: 100%;
+            border-radius: 0 0 4px 4px;
+}
+
+.dropdown-option{
+    padding: 10px;
+            border-bottom: 1px solid #f5dfc4;
+            cursor: pointer;
+}
+
+.client-info{
+    margin-bottom: 20px;
+            border: 1px solid #f5dfc4;
+            padding: 15px;
+            background-color: #f9f0e7;
+            border-radius: 4px;
+}
+
+.client-info h3{
+    margin: 0 0 10px 0;
+}
+
+.client-info p{
+    margin: 5px 0;
+}
+
+.product-dropdown-container{
+    width: 100%; position: relative;
+}
+
+.dropdown-header{
+    border: 1px solid #f5dfc4;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #f9f0e7;
+            border-radius: 4px;
+}
+
+.product-dropdown-container .dropdown-options{
+    border: 1px solid #f5dfc4;
+            border-top: none;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #FFF7ED;
+            z-index: 10;
+            position: absolute;
+            width: 100%;
+            border-radius: 0 0 4px 4px;
+}
+
+.product-dropdown-container .dropdown-options .dropdown-option{
+    padding: 10px;
+            border-bottom: 1px solid #f5dfc4;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+}
+
+.create-quotation-div{
+    margin-top: 20px; text-align: right;
+}
