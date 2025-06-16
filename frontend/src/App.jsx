@@ -20,6 +20,7 @@ import PurchaseDetails from "./pages/purchase/PurchaseDetails";
 import AddNewQuotation from "./pages/quots/AddNewQuotation";
 import QuotationDetails from "./pages/quots/QuotationDetails";
 import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
 const App = () => {
   return (
     <BrowserRouter>
@@ -54,6 +55,7 @@ const App = () => {
           <Route path="purchasing" element={<Purchasing />} />
           <Route path="purchasing/:id" element={<PurchaseDetails />} />
           <Route path="purchasing/new-purchase" element={<NewPurchase />} />
+          <Route path="*" element={<NotFound />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
