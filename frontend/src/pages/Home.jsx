@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/Home.css";
-
+import prod from "../images/prods.jpg";
+import client from "../images/clients2.jpg";
+import supplier from "../images/supplier2.jpg";
+import link from "../images/link2.jpg";
+import purchase from "../images/purchase2.webp";
+import quot from "../images/quot2.jpg";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const Home = () => {
@@ -192,7 +197,7 @@ const Home = () => {
             <div className="step-content">
               <div className="step-image-container">
                 <img
-                  src=".."
+                  src={prod}
                   alt="Add Products"
                   className="step-image"
                   onError={(e) => {
@@ -220,7 +225,7 @@ const Home = () => {
             <div className="step-content">
               <div className="step-image-container">
                 <img
-                  src=".."
+                  src={client}
                   alt="Add Clients"
                   className="step-image"
                   onError={(e) => {
@@ -248,7 +253,7 @@ const Home = () => {
             <div className="step-content">
               <div className="step-image-container">
                 <img
-                  src=".."
+                  src={supplier}
                   alt="Add Suppliers"
                   className="step-image"
                   onError={(e) => {
@@ -276,7 +281,7 @@ const Home = () => {
             <div className="step-content">
               <div className="step-image-container">
                 <img
-                  src="../images/link-products.jpg"
+                  src={link}
                   alt="Link Suppliers to Products"
                   className="step-image"
                   onError={(e) => {
@@ -304,7 +309,7 @@ const Home = () => {
             <div className="step-content">
               <div className="step-image-container">
                 <img
-                  src="{purchase}"
+                  src={purchase}
                   alt="Purchase Products"
                   className="step-image"
                   onError={(e) => {
@@ -332,7 +337,7 @@ const Home = () => {
             <div className="step-content">
               <div className="step-image-container">
                 <img
-                  src="{quotations}"
+                  src={quot}
                   alt="Manage Quotations"
                   className="step-image"
                   onError={(e) => {
