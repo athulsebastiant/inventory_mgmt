@@ -24,7 +24,7 @@ const NewPurchase = () => {
   const [submittingOrder, setSubmittingOrder] = useState(false);
   const [orderSuccesss, setOrderSuccess] = useState(false);
   const [orderError, setOrderError] = useState(null);
-  const [isDemoMode, setIsDemoMode] = useState(true);
+  const [isDemoMode, setIsDemoMode] = useState(false);
   const [message, setMessage] = useState("");
   const fetchSuppliers = async () => {
     try {

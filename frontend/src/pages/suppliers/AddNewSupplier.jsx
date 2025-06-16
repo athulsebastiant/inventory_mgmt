@@ -11,7 +11,7 @@ const AddNewSupplier = () => {
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isDemoMode, setIsDemoMode] = useState(true);
+  const [isDemoMode, setIsDemoMode] = useState(false);
   const [message, setMessage] = useState("");
   const onSubmitHandler = async (e) => {
     e.preventDefault();

@@ -17,7 +17,7 @@ const AddNewClient = () => {
   const [preferredContact, setPreferredContact] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
-  const [isDemoMode, setIsDemoMode] = useState(true);
+  const [isDemoMode, setIsDemoMode] = useState(false);
   const [message, setMessage] = useState("");
   const validateForm = () => {
     const newErrors = {};
