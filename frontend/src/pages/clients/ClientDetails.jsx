@@ -10,6 +10,8 @@ const ClientDetails = () => {
   const [clientInfo, setClientInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [editableInfo, setEditableInfo] = useState(null);
   async function getClient() {
     try {
       setLoading(true);
@@ -17,6 +19,7 @@ const ClientDetails = () => {
         `${backendUrl}/api/clients/${params.id}`
       );
       setClientInfo(response.data);
+      setEditableInfo(response.data);
     } catch (error) {
       console.log(error.message);
       setError("Failed to load client details");
@@ -28,6 +31,36 @@ const ClientDetails = () => {
   useEffect(() => {
     getClient();
   }, [params.id]);
+
+  const handleChange = (field, value) => {
+    setEditableInfo((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleEditSave = async () => {
+    if (editMode) {
+      try {
+        const response = await axios.put(
+          `${backendUrl}/api/clients/${params.id}`,
+          editableInfo
+        );
+
+        if (response.data.success) {
+          setClientInfo(response.data.client);
+          setEditableInfo(response.data.client);
+          alert(response.data.message);
+        } else {
+          alert("Failed to update client details.");
+        }
+      } catch (error) {
+        console.error("Update failed:", error);
+        alert("An error occurred while updating client details.");
+      }
+    }
+    setEditMode(!editMode);
+  };
 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
@@ -87,10 +120,22 @@ const ClientDetails = () => {
               </div>
             </div>
           </div>
+          <button onClick={handleEditSave} className="edit-save-btn">
+            {editMode ? "💾 Save" : "✏️ Edit"}
+          </button>
           <div className="client-content">
             <div className="client-main-info">
               <div className="client-title-section">
-                <h1 className="client-name">{clientInfo.name}</h1>
+                {editMode ? (
+                  <input
+                    className="client-input"
+                    value={editableInfo.name}
+                    onChange={(e) => handleChange("name", e.target.value)}
+                  />
+                ) : (
+                  <h1 className="client-name">{clientInfo.name}</h1>
+                )}
+
                 <span
                   className={`status-badge ${getStatusColor(
                     clientInfo.status
@@ -102,7 +147,17 @@ const ClientDetails = () => {
 
               <div className="contact-person-section">
                 <h2 className="section-title">Contact Person</h2>
-                <p className="contact-person">{clientInfo.contactPerson}</p>
+                {editMode ? (
+                  <input
+                    className="client-input"
+                    value={editableInfo.contactPerson}
+                    onChange={(e) =>
+                      handleChange("contactPerson", e.target.value)
+                    }
+                  />
+                ) : (
+                  <p className="contact-person">{clientInfo.contactPerson}</p>
+                )}
               </div>
             </div>
 
@@ -112,21 +167,71 @@ const ClientDetails = () => {
                 <div className="detail-list">
                   <div className="detail-row">
                     <span className="detail-label">📞 Phone:</span>
-                    <span className="detail-value">{clientInfo.phone}</span>
+                    {editMode ? (
+                      <input
+                        className="client-input-small"
+                        value={editableInfo.phone}
+                        onChange={(e) => handleChange("phone", e.target.value)}
+                      />
+                    ) : (
+                      <span className="detail-value">{clientInfo.phone}</span>
+                    )}
                   </div>
                   <div className="detail-row">
                     <span className="detail-label">✉️ Email:</span>
-                    <span className="detail-value">{clientInfo.email}</span>
+                    {editMode ? (
+                      <input
+                        className="client-input-small"
+                        value={editableInfo.email}
+                        onChange={(e) => handleChange("email", e.target.value)}
+                      />
+                    ) : (
+                      <span className="detail-value">{clientInfo.email}</span>
+                    )}
                   </div>
                   <div className="detail-row">
                     <span className="detail-label">🏠 Address:</span>
-                    <span className="detail-value">{clientInfo.address}</span>
+                    {editMode ? (
+                      <input
+                        className="client-input-small"
+                        value={editableInfo.address}
+                        onChange={(e) =>
+                          handleChange("address", e.target.value)
+                        }
+                      />
+                    ) : (
+                      <span className="detail-value">{clientInfo.address}</span>
+                    )}
                   </div>
                   <div className="detail-row">
                     <span className="detail-label">📋 Preferred Contact:</span>
-                    <span className="detail-value">
-                      {clientInfo.preferredContactMethod}
-                    </span>
+                    {editMode ? (
+                      <select
+                        className="client-input-small"
+                        onChange={(e) =>
+                          handleChange("preferredContactMethod", e.target.value)
+                        }
+                      >
+                        <option
+                          value={
+                            editableInfo.preferredContactMethod == "phone"
+                              ? "email"
+                              : "phone"
+                          }
+                        >
+                          {editableInfo.preferredContactMethod == "phone"
+                            ? "email"
+                            : "phone"}
+                        </option>
+                        <option value={editableInfo.preferredContactMethod}>
+                          {editableInfo.preferredContactMethod}
+                        </option>
+                      </select>
+                    ) : (
+                      <span className="detail-value">
+                        {clientInfo.preferredContactMethod}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -136,13 +241,49 @@ const ClientDetails = () => {
                 <div className="detail-list">
                   <div className="detail-row">
                     <span className="detail-label">🏢 Company Type:</span>
-                    <span className="detail-value">
-                      {clientInfo.companyType}
-                    </span>
+                    {editMode ? (
+                      <select
+                        className="client-input-small"
+                        onChange={(e) =>
+                          handleChange("companyType", e.target.value)
+                        }
+                      >
+                        <option
+                          value={
+                            editableInfo.companyType == "individual"
+                              ? "corporate"
+                              : "individual"
+                          }
+                        >
+                          {editableInfo.companyType == "individual"
+                            ? "corporate"
+                            : "individual"}
+                        </option>
+                        <option value={editableInfo.companyType}>
+                          {editableInfo.companyType}
+                        </option>
+                      </select>
+                    ) : (
+                      <span className="detail-value">
+                        {clientInfo.companyType}
+                      </span>
+                    )}
                   </div>
                   <div className="detail-row">
                     <span className="detail-label">🧾 GST Number:</span>
-                    <span className="detail-value">{clientInfo.gstNumber}</span>
+                    {editMode ? (
+                      <input
+                        className="client-input-small"
+                        value={editableInfo.gstNumber}
+                        onChange={(e) =>
+                          handleChange("gstNumber", e.target.value)
+                        }
+                      />
+                    ) : (
+                      <span className="detail-value">
+                        {clientInfo.gstNumber}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -151,7 +292,15 @@ const ClientDetails = () => {
                 <div className="detail-card notes-card">
                   <h3 className="card-title">Notes</h3>
                   <div className="notes-content">
-                    <p>{clientInfo.notes}</p>
+                    {editMode ? (
+                      <input
+                        className="client-input"
+                        value={editableInfo.notes}
+                        onChange={(e) => handleChange("notes", e.target.value)}
+                      />
+                    ) : (
+                      <p>{clientInfo.notes}</p>
+                    )}
                   </div>
                 </div>
               )}
