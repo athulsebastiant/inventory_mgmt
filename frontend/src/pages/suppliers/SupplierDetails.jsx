@@ -9,6 +9,8 @@ const SupplierDetails = () => {
   const [supplierInfo, setSupplierInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [editMode, setEditMode] = useState(false);
+  const [editableInfo, setEditableInfo] = useState(null);
   async function getSupplier() {
     setLoading(true);
     setError("");
@@ -17,6 +19,7 @@ const SupplierDetails = () => {
         `${backendUrl}/api/suppliers/${params.id}`
       );
       setSupplierInfo(response.data);
+      setEditableInfo(response.data);
     } catch (error) {
       setError("Failed to load supplier details.");
     } finally {
@@ -28,6 +31,36 @@ const SupplierDetails = () => {
   useEffect(() => {
     getSupplier();
   }, [params.id]);
+
+  const handleChange = (field, value) => {
+    setEditableInfo((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleEditSave = async () => {
+    if (editMode) {
+      try {
+        const response = await axios.put(
+          `${backendUrl}/api/suppliers/${params.id}`,
+          editableInfo
+        );
+        if (response.data.success) {
+          setSupplierInfo(response.data.updated);
+          setEditableInfo(response.data.updated);
+          alert(response.data.message);
+        } else {
+          alert("Failed to update supplier details.");
+        }
+      } catch (error) {
+        console.error("Update failed:", error);
+        alert("An error occurred while updating supplier details.");
+      }
+    }
+    setEditMode(!editMode);
+  };
+
   return (
     <section className="container">
       <nav className="breadcrumb">
@@ -40,10 +73,45 @@ const SupplierDetails = () => {
         <p className="error-text">{error}</p>
       ) : supplierInfo ? (
         <div className="supplier-details-card">
-          <h2>{supplierInfo.name}</h2>
-          <p>Email: {supplierInfo.email}</p>
-          <p>Phone: {supplierInfo.phone}</p>
-          <p>Address: {supplierInfo.address}</p>
+          <button onClick={handleEditSave} className="edit-save-btn">
+            {editMode ? "💾 Save" : "✏️ Edit"}
+          </button>
+          {editMode ? (
+            <input
+              className="supplier-input"
+              value={editableInfo.name}
+              onChange={(e) => handleChange("name", e.target.value)}
+            />
+          ) : (
+            <h2>{supplierInfo.name}</h2>
+          )}
+          {editMode ? (
+            <input
+              className="supplier-input-small"
+              value={editableInfo.email}
+              onChange={(e) => handleChange("email", e.target.value)}
+            />
+          ) : (
+            <p>Email: {supplierInfo.email}</p>
+          )}
+          {editMode ? (
+            <input
+              className="supplier-input-small"
+              value={editableInfo.phone}
+              onChange={(e) => handleChange("phone", e.target.value)}
+            />
+          ) : (
+            <p>Phone: {supplierInfo.phone}</p>
+          )}
+          {editMode ? (
+            <input
+              className="supplier-input-small"
+              value={editableInfo.address}
+              onChange={(e) => handleChange("address", e.target.value)}
+            />
+          ) : (
+            <p>Address: {supplierInfo.address}</p>
+          )}
         </div>
       ) : (
         <p className="status-text">No supplier data found.</p>

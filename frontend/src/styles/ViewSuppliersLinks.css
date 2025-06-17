@@ -50,7 +50,7 @@
 .product-image {
   width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     /* This makes sure the image fills the container while maintaining its aspect ratio */
     position: absolute;
     top: 0;
@@ -176,4 +176,27 @@
     font-size: 12px;
     padding: 6px 12px;
   }
+}
+
+.edit-save-btn {
+  background: linear-gradient(135deg, #b08d64 0%, #6b5b47 100%);
+  color: #FFF7ED;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.delete-btn,
+.edit-save-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 120px;
+  justify-content: center;
+  margin-bottom: 10px;
 }

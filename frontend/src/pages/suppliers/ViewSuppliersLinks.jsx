@@ -8,6 +8,8 @@ const ViewSuppliersLinks = () => {
   const [psLinks, setPsLinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editLinkMode, setEditLinkMode] = useState(false);
+  const [editPsLinkInfo, setEditPsLinkInfo] = useState(null);
   const fetchLink = async () => {
     try {
       setLoading(true);
@@ -15,6 +17,7 @@ const ViewSuppliersLinks = () => {
         `${backendUrl}/api/productSuppliers/supplier/${supplier._id}`
       );
       setPsLinks(response.data);
+      setEditPsLinkInfo(response.data);
       setError(null);
     } catch (error) {
       console.log(error);
@@ -28,6 +31,18 @@ const ViewSuppliersLinks = () => {
     fetchLink();
   }, [supplier]);
   console.log(psLinks);
+
+  const handleLinkInfoChange = (field, value) => {
+    setEditPsLinkInfo((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleEditSaveLink = () => {
+    console.log("Saved Json", editPsLinkInfo);
+    setEditLinkMode(!editLinkMode);
+  };
 
   if (loading) {
     return <div className="loading">Loading supplier links...</div>;
@@ -49,7 +64,9 @@ const ViewSuppliersLinks = () => {
   return (
     <div className="supplier-links-container">
       <h2>Linked Products ({psLinks.length})</h2>
-
+      <button onClick={handleEditSaveLink} className="edit-save-btn">
+        {editLinkMode ? "💾 Save" : "✏️ Edit"}
+      </button>
       <div className="products-grid">
         {psLinks.map((link) => (
           <div key={link._id} className="product-card">
@@ -60,9 +77,10 @@ const ViewSuppliersLinks = () => {
                 style={{
                   width: "100%",
                   height: "100%",
-                  objectFit: "cover",
+                  objectFit: "contain",
                   /* This makes sure the image fills the container while maintaining its aspect ratio */
                   position: "absolute",
+                  background: "#fff",
                   top: "0",
                   left: "0",
                 }}
@@ -75,11 +93,13 @@ const ViewSuppliersLinks = () => {
               <div className="product-details">
                 <div className="detail-item">
                   <span className="detail-label">Unit Price:</span>
+
                   <span className="detail-value">${link.unitPrice}</span>
                 </div>
 
                 <div className="detail-item">
                   <span className="detail-label">Lead Time:</span>
+
                   <span className="detail-value">{link.leadTimeDays} days</span>
                 </div>
 

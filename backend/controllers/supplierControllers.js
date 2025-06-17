@@ -42,7 +42,11 @@ export const updateSupplier = async (req, res) => {
     const updated = await Supplier.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-    res.json(updated);
+    res.json({
+      success: true,
+      message: "Supplier Data Updated successfully",
+      updated,
+    });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

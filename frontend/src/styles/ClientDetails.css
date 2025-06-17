@@ -332,7 +332,7 @@
     margin-bottom: 10px;
 }
 
-.client-name-input { 
+.client-input { 
     padding: 0.75rem;
         border: 2px solid #f5dfc4;
         border-radius: 8px;
@@ -341,6 +341,7 @@
         color: #252525;
         transition: all 0.2s ease;
         font-family: inherit;
+        font-weight: bold;
   }
   .client-input:focus{
 outline: none;
