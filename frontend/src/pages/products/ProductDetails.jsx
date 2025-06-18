@@ -9,6 +9,8 @@ const ProductDetails = () => {
   console.log(params);
   const [productinfo, setProductInfo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [editmode, setEditMode] = useState(false);
+  const [editableInfo, setEditableInfo] = useState(null);
   async function getProduct() {
     try {
       const response = await axios.get(
@@ -16,6 +18,7 @@ const ProductDetails = () => {
       );
       console.log(response);
       setProductInfo(response.data);
+      setEditableInfo(response.data);
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -26,7 +29,37 @@ const ProductDetails = () => {
   useEffect(() => {
     getProduct();
   }, [params.id]);
-  console.log(productinfo);
+
+  const handleChange = (field, value) => {
+    setEditableInfo((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleEditSave = async () => {
+    if (editmode) {
+      try {
+        const response = await axios.put(
+          `${backendUrl}/api/products/${params.id}`,
+          editableInfo
+        );
+
+        if (response.data.success) {
+          setProductInfo(response.data.updatedProduct);
+          setEditableInfo(response.data.updatedProduct);
+          alert(response.data.message);
+        } else {
+          alert("Failed to update product details.");
+        }
+      } catch (error) {
+        sole.error("Update failed:", error);
+        alert("An error occurred while updating client details.");
+      }
+    }
+    setEditMode(!editmode);
+  };
+
   if (loading) {
     return (
       <div className="product-details-container loading">
@@ -44,6 +77,9 @@ const ProductDetails = () => {
       <nav className="breadcrumb">
         <Link to="/products">Products</Link> &gt; <span>Product Details</span>
       </nav>
+      <button onClick={handleEditSave} className="editProduct-btn">
+        {editmode ? "💾 Save" : "✏️ Edit"}
+      </button>
       <div className="product-images-grid">
         {productinfo.imagesUrl.map((url, index) =>
           url ? (
@@ -52,28 +88,76 @@ const ProductDetails = () => {
         )}
       </div>
       <div className="product-info">
-        <h2>{productinfo.name}</h2>
-        <p>
-          <strong>SKU:</strong> {productinfo.sku}
-        </p>
-        <p>
-          <strong>Category:</strong> {productinfo.category}
-        </p>
-        <p id="desc">
-          <strong>Description:</strong> {productinfo.description}
-        </p>
+        {editmode ? (
+          <input
+            className="product-input"
+            value={editableInfo.name}
+            onChange={(e) => handleChange("name", e.target.value)}
+          />
+        ) : (
+          <h2>{productinfo.name}</h2>
+        )}
+        {editmode ? (
+          <input
+            className="product-input-small"
+            value={editableInfo.sku}
+            onChange={(e) => handleChange("sku", e.target.value)}
+          />
+        ) : (
+          <p>
+            <strong>SKU:</strong> {productinfo.sku}
+          </p>
+        )}
+        {editmode ? (
+          <input
+            className="product-input-small"
+            value={editableInfo.category}
+            onChange={(e) => handleChange("category", e.target.value)}
+          />
+        ) : (
+          <p>
+            <strong>Category:</strong> {productinfo.category}
+          </p>
+        )}
+        {editmode ? (
+          <input
+            className="product-input-small"
+            value={editableInfo.description}
+            onChange={(e) => handleChange("description", e.target.value)}
+          />
+        ) : (
+          <p id="desc">
+            <strong>Description:</strong> {productinfo.description}
+          </p>
+        )}
         <p>
           <strong>Current Stock:</strong> {productinfo.currentStock}
         </p>
         <p>
           <strong>Initial Stock:</strong> {productinfo.initialStock}
         </p>
-        <p>
-          <strong>Reorder Level:</strong> {productinfo.reorderLevel}
-        </p>
-        <p>
-          <strong>Cost Price:</strong> ${productinfo.costPrice}
-        </p>
+        {editmode ? (
+          <input
+            className="product-input-small"
+            value={editableInfo.reorderLevel}
+            onChange={(e) => handleChange("reorderLevel", e.target.value)}
+          />
+        ) : (
+          <p>
+            <strong>Reorder Level:</strong> {productinfo.reorderLevel}
+          </p>
+        )}
+        {editmode ? (
+          <input
+            className="product-input-small"
+            value={editableInfo.costPrice}
+            onChange={(e) => handleChange("costPrice", e.target.value)}
+          />
+        ) : (
+          <p>
+            <strong>Cost Price:</strong> ${productinfo.costPrice}
+          </p>
+        )}
       </div>
     </div>
   );

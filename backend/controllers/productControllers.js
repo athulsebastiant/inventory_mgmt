@@ -84,7 +84,11 @@ export const updateProduct = async (req, res) => {
       req.body,
       { new: true }
     );
-    res.json(updatedProduct);
+    res.json({
+      success: true,
+      message: "Product updated successfully",
+      updatedProduct,
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
