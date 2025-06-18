@@ -9,7 +9,7 @@ const ViewSuppliersLinks = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [editLinkMode, setEditLinkMode] = useState(false);
-  const [editPsLinkInfo, setEditPsLinkInfo] = useState(null);
+  const [editPsLinkInfo, setEditPsLinkInfo] = useState([]);
   const fetchLink = async () => {
     try {
       setLoading(true);
@@ -17,7 +17,7 @@ const ViewSuppliersLinks = () => {
         `${backendUrl}/api/productSuppliers/supplier/${supplier._id}`
       );
       setPsLinks(response.data);
-      setEditPsLinkInfo(response.data);
+      setEditPsLinkInfo(response.data.map((link) => ({ ...link })));
       setError(null);
     } catch (error) {
       console.log(error);
@@ -32,15 +32,44 @@ const ViewSuppliersLinks = () => {
   }, [supplier]);
   console.log(psLinks);
 
-  const handleLinkInfoChange = (field, value) => {
-    setEditPsLinkInfo((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  // const handleLinkInfoChange = (linkId, field, value) => {
+  //   setEditPsLinkInfo((prev) => {
+  //     prev.map((link) => {
+  //       link._id === linkId ? { ...link, [field]: value } : link;
+  //     });
+  //   });
+  // };
 
-  const handleEditSaveLink = () => {
-    console.log("Saved Json", editPsLinkInfo);
+  const handleEditSaveLink = async () => {
+    if (editLinkMode) {
+      try {
+        for (const link of editPsLinkInfo) {
+          const response = await axios.put(
+            `${backendUrl}/api/productSuppliers/${link._id}`,
+            link
+          );
+
+          if (!response.data.success) {
+            console.error("Failed to update link:", response.data.message);
+            alert(`Failed to update link: ${response.data.message}`);
+            return; // stop further updates if one fails
+          }
+
+          console.log(
+            "Link updated:",
+            response.data.message,
+            response.data.link
+          );
+        }
+
+        alert("All links updated successfully.");
+        await fetchLink(); // 🔄 Refresh data from server after updates
+      } catch (error) {
+        console.error("Error updating links:", error);
+        alert("An error occurred while updating links.");
+      }
+    }
+
     setEditLinkMode(!editLinkMode);
   };
 
@@ -93,14 +122,51 @@ const ViewSuppliersLinks = () => {
               <div className="product-details">
                 <div className="detail-item">
                   <span className="detail-label">Unit Price:</span>
-
-                  <span className="detail-value">${link.unitPrice}</span>
+                  {editLinkMode ? (
+                    <input
+                      type="number"
+                      value={
+                        editPsLinkInfo?.find((l) => l._id === link._id)
+                          ?.unitPrice || ""
+                      }
+                      onChange={(e) => {
+                        const updatedLinks = editPsLinkInfo.map((l) =>
+                          l._id === link._id
+                            ? { ...l, unitPrice: e.target.value }
+                            : l
+                        );
+                        setEditPsLinkInfo(updatedLinks);
+                      }}
+                    />
+                  ) : (
+                    <span className="detail-value">${link.unitPrice}</span>
+                  )}
                 </div>
 
                 <div className="detail-item">
                   <span className="detail-label">Lead Time:</span>
 
-                  <span className="detail-value">{link.leadTimeDays} days</span>
+                  {editLinkMode ? (
+                    <input
+                      type="number"
+                      value={
+                        editPsLinkInfo?.find((l) => l._id === link._id)
+                          ?.leadTimeDays || ""
+                      }
+                      onChange={(e) => {
+                        const updatedLinks = editPsLinkInfo.map((l) =>
+                          l._id === link._id
+                            ? { ...l, leadTimeDays: e.target.value }
+                            : l
+                        );
+                        setEditPsLinkInfo(updatedLinks);
+                      }}
+                    />
+                  ) : (
+                    <span className="detail-value">
+                      {link.leadTimeDays} days
+                    </span>
+                  )}
                 </div>
 
                 {link.preferred && (

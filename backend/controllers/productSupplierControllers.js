@@ -91,7 +91,7 @@ export const updateProductSupplier = async (req, res) => {
     link.preferred = preferred ?? link.preferred;
 
     await link.save();
-    res.json(link);
+    res.json({ success: true, message: "Links updated successfully", link });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
