@@ -21,11 +21,13 @@ import AddNewQuotation from "./pages/quots/AddNewQuotation";
 import QuotationDetails from "./pages/quots/QuotationDetails";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import Signup from "./pages/Signup";
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route path="signup" element={<Signup />} />
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="products" element={<Products />} />
