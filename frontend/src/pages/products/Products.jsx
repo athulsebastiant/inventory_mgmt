@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import "../../styles/Products.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Products = () => {
   const [products, setProducts] = React.useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryFilter = searchParams.get("category");
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -31,7 +33,14 @@ const Products = () => {
     console.log("Number of products:", products.length);
   }, [products]);
 
-  const productElements = products.map((product) => (
+  const displayedProducts = categoryFilter
+    ? products.filter(
+        (product) =>
+          product.category.toLowerCase().replace(/\s+/g, "") === categoryFilter
+      )
+    : products;
+
+  const productElements = displayedProducts.map((product) => (
     <div key={product._id} className="product-tile">
       <Link to={`${product._id}`}>
         <img src={product.imagesUrl[0]} alt="" />
@@ -44,6 +53,17 @@ const Products = () => {
     </div>
   ));
 
+  function handleFilterChange(key, value) {
+    setSearchParams((prevParams) => {
+      if (value === null) {
+        prevParams.delete(key);
+      } else {
+        prevParams.set(key, value);
+      }
+      return prevParams;
+    });
+  }
+
   return (
     <div className="product-list-container">
       <h1>All Products</h1>
@@ -51,6 +71,27 @@ const Products = () => {
         <Link to={"add-new-product"} className="new_product_link">
           Add New Product
         </Link>
+        <button onClick={() => handleFilterChange("category", "powertools")}>
+          Power Tools
+        </button>
+        <button
+          onClick={() => handleFilterChange("category", "nailers&staplers")}
+        >
+          Nailers and Staplers
+        </button>
+        <button
+          onClick={() => handleFilterChange("category", "measuringtools")}
+        >
+          Measuring Tools
+        </button>
+        <button onClick={() => handleFilterChange("category", "clamps&vises")}>
+          Clamps and Vises
+        </button>
+        {categoryFilter ? (
+          <button onClick={() => handleFilterChange("category", null)}>
+            Clear Filters
+          </button>
+        ) : null}
       </div>
       {loading ? (
         <div className="loading-products">
