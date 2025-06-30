@@ -7,9 +7,10 @@ import {
   deletePurchaseOrder,
   getPurchaseOrderCount,
 } from "../controllers/purchaseOrderControllers.js";
+import protect from "../middleware/authMiddleware.js";
 
 const router = express.Router();
-
+router.use(protect);
 router.post("/", createPurchaseOrder);
 router.get("/", getAllPurchaseOrders);
 router.get("/:id", getPurchaseOrderById);

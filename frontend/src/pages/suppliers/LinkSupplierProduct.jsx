@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
 import "../../styles/LinkSupplierProduct.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const token = localStorage.getItem("authToken");
 const LinkSupplierProduct = () => {
   const supplier = useOutletContext();
   const navigate = useNavigate();
@@ -17,7 +18,11 @@ const LinkSupplierProduct = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${backendUrl}/api/products/`);
+        const response = await axios.get(`${backendUrl}/api/products/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = response.data;
         setProducts(data);
         setError(null);
@@ -57,7 +62,12 @@ const LinkSupplierProduct = () => {
       };
       const response = await axios.post(
         `${backendUrl}/api/productSuppliers/`,
-        body
+        body,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.status === 201) {
         setUnitPrice("");

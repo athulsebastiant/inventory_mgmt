@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "../../styles/AddNewSupplier.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const token = localStorage.getItem("authToken");
 const AddNewSupplier = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -31,7 +32,11 @@ const AddNewSupplier = () => {
         address,
       };
 
-      const response = await axios.post(`${backendUrl}/api/suppliers/`, body);
+      const response = await axios.post(`${backendUrl}/api/suppliers/`, body, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (response.status === 201) {
         setName("");

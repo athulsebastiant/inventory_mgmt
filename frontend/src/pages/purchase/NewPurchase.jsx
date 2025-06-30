@@ -3,6 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/NewPurchase.css";
+const token = localStorage.getItem("authToken");
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const NewPurchase = () => {
   const [suppliers, setSuppliers] = useState([]);
@@ -29,7 +30,11 @@ const NewPurchase = () => {
   const fetchSuppliers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${backendUrl}/api/suppliers/`);
+      const response = await axios.get(`${backendUrl}/api/suppliers/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = response.data;
       setSuppliers(data);
       setError(null);
@@ -45,7 +50,12 @@ const NewPurchase = () => {
     try {
       setLoadingProducts(true);
       const response = await axios.get(
-        `${backendUrl}/api/productSuppliers/supplier/${supplierId}`
+        `${backendUrl}/api/productSuppliers/supplier/${supplierId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.data;
       setProductSupplierLinks(data);
@@ -136,7 +146,12 @@ const NewPurchase = () => {
       };
       const response = await axios.post(
         `${backendUrl}/api/purchase-orders/`,
-        orderData
+        orderData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log("Purchase order created successfully", response.data);
       setOrderSuccess(true);

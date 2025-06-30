@@ -7,9 +7,10 @@ import {
   updateProductSupplier,
   deleteProductSupplier,
 } from "../controllers/productSupplierControllers.js";
+import protect from "../middleware/authMiddleware.js";
 
 const router = express.Router();
-
+router.use(protect);
 router.post("/", createProductSupplier);
 router.get("/", getAllProductSuppliers);
 router.get("/product/:productId", getProductSuppliersByProduct);

@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "../../styles/Supplier.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const token = localStorage.getItem("authToken");
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,7 +11,11 @@ const Suppliers = () => {
   const fetchSuppliers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${backendUrl}/api/suppliers/`);
+      const response = await axios.get(`${backendUrl}/api/suppliers/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setSuppliers(response.data);
       setError("");
     } catch (error) {

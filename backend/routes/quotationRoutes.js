@@ -10,9 +10,10 @@ import {
   getQuotationCount,
   getTotalQuotValue,
 } from "../controllers/quotationControllers.js";
+import protect from "../middleware/authMiddleware.js";
 
 const router = express.Router();
-
+router.use(protect);
 router.post("/", createQuotation);
 router.get("/", getAllQuotations);
 router.get("/:id", getQuotationById);

@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../../styles/Client-Quots.css";
+const token = localStorage.getItem("authToken");
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const ClientQuots = () => {
   const [quotations, setQuotations] = useState([]);
@@ -16,7 +17,11 @@ const ClientQuots = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await axios.get(`${backendUrl}/api/client-quotations/`);
+      const res = await axios.get(`${backendUrl}/api/client-quotations/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setQuotations(res.data);
     } catch (err) {
       setError("Failed to fetch quotations. Please try again.");

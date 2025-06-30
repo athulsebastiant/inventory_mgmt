@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../../styles/AddNewQuotation.css";
+const token = localStorage.getItem("authToken");
 const AddNewQuotation = () => {
   const navigate = useNavigate();
   const [clients, setClients] = useState([]);
@@ -16,13 +17,21 @@ const AddNewQuotation = () => {
   const [message, setMessage] = useState("");
   useEffect(() => {
     // Fetch clients
-    fetch(`${backendUrl}/api/clients/`)
+    fetch(`${backendUrl}/api/clients/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setClients(data))
       .catch((err) => console.error("Error fetching clients:", err));
 
     // Fetch products
-    fetch(`${backendUrl}/api/products/`)
+    fetch(`${backendUrl}/api/products/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error("Error fetching products:", err));
@@ -51,7 +60,11 @@ const AddNewQuotation = () => {
       };
 
       // Fetch suppliers for this product
-      fetch(`${backendUrl}/api/productSuppliers/product/${product._id}`)
+      fetch(`${backendUrl}/api/productSuppliers/product/${product._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((res) => res.json())
         .then((suppliers) => {
           setSelectedProducts((prev) =>
@@ -134,6 +147,7 @@ const AddNewQuotation = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(quotationData),
       });

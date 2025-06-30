@@ -7,6 +7,7 @@ import supplier from "../images/supplier2.jpg";
 import link from "../images/link2.jpg";
 import purchase from "../images/purchase2.webp";
 import quot from "../images/quot2.jpg";
+const token = localStorage.getItem("authToken");
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const Home = () => {
@@ -34,7 +35,11 @@ const Home = () => {
           quotationValueResponse,
         ] = await Promise.all([
           axios.get(`${backendUrl}/api/products/products/count`),
-          axios.get(`${backendUrl}/api/clients/clients/count`),
+          axios.get(`${backendUrl}/api/clients/clients/count`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
           axios.get(`${backendUrl}/api/products/products/total-inv-cost`),
           axios.get(`${backendUrl}/api/suppliers/suppliers/count`),
           axios.get(`${backendUrl}/api/client-quotations/quotations/count`),

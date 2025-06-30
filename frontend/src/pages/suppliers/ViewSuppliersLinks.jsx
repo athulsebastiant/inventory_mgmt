@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import axios from "axios";
 import "../../styles/ViewSuppliersLinks.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const token = localStorage.getItem("authToken");
 const ViewSuppliersLinks = () => {
   const supplier = useOutletContext();
   const [psLinks, setPsLinks] = useState([]);
@@ -14,7 +15,12 @@ const ViewSuppliersLinks = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${backendUrl}/api/productSuppliers/supplier/${supplier._id}`
+        `${backendUrl}/api/productSuppliers/supplier/${supplier._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPsLinks(response.data);
       setEditPsLinkInfo(response.data.map((link) => ({ ...link })));
@@ -46,7 +52,12 @@ const ViewSuppliersLinks = () => {
         for (const link of editPsLinkInfo) {
           const response = await axios.put(
             `${backendUrl}/api/productSuppliers/${link._id}`,
-            link
+            link,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
           );
 
           if (!response.data.success) {

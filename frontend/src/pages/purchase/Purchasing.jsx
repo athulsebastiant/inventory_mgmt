@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
+const token = localStorage.getItem("authToken");
 import "../../styles/Purchasing.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Purchasing = () => {
@@ -13,7 +14,11 @@ const Purchasing = () => {
   const statusFilter = searchParams.get("status");
   const fetchPurchases = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/purchase-orders/`);
+      const response = await axios.get(`${backendUrl}/api/purchase-orders/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log(response.data);
       setPurchases(response.data);
       setError("");

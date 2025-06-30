@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "../../styles/QuotationDetails.css";
+const token = localStorage.getItem("authToken");
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const QuotationDetails = () => {
   const { id } = useParams();
@@ -11,7 +12,11 @@ const QuotationDetails = () => {
   const [isFrozen, setIsFrozen] = useState(false);
   const fetchQuotation = async () => {
     try {
-      const res = await axios.get(`${backendUrl}/api/client-quotations/${id}`);
+      const res = await axios.get(`${backendUrl}/api/client-quotations/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setQuotation(res.data);
       if (res.data.status === "fulfilled") {
         setIsFrozen(true);
@@ -27,7 +32,12 @@ const QuotationDetails = () => {
   const handleApprove = async () => {
     try {
       const res = await axios.put(
-        `${backendUrl}/api/client-quotations/${id}/approve`
+        `${backendUrl}/api/client-quotations/${id}/approve`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       setMessage(res.data.message);
@@ -42,7 +52,12 @@ const QuotationDetails = () => {
   const handleFulfill = async () => {
     try {
       const res = await axios.put(
-        `${backendUrl}/api/client-quotations/${id}/fulfill`
+        `${backendUrl}/api/client-quotations/${id}/fulfill`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       setMessage(res.data.message);

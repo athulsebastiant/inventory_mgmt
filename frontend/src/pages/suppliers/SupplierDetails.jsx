@@ -4,6 +4,7 @@ import { NavLink, useParams, Outlet, Link } from "react-router-dom";
 import axios from "axios";
 import "../../styles/SupplierDetails.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const token = localStorage.getItem("authToken");
 const SupplierDetails = () => {
   const params = useParams();
   const [supplierInfo, setSupplierInfo] = useState(null);
@@ -16,7 +17,12 @@ const SupplierDetails = () => {
     setError("");
     try {
       const response = await axios.get(
-        `${backendUrl}/api/suppliers/${params.id}`
+        `${backendUrl}/api/suppliers/${params.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setSupplierInfo(response.data);
       setEditableInfo(response.data);
@@ -44,7 +50,12 @@ const SupplierDetails = () => {
       try {
         const response = await axios.put(
           `${backendUrl}/api/suppliers/${params.id}`,
-          editableInfo
+          editableInfo,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         if (response.data.success) {
           setSupplierInfo(response.data.updated);

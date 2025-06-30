@@ -3,6 +3,7 @@ import imgUpload from "../../images/imgUpload.jpg";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "../../styles/AddNewProduct.css";
+const token = localStorage.getItem("authToken");
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const AddNewProduct = () => {
   const navigate = useNavigate();
@@ -47,7 +48,12 @@ const AddNewProduct = () => {
 
       const response = await axios.post(
         `${backendUrl}/api/products/`,
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.status === 201) {
         console.log("Product added successfully:", response.data);

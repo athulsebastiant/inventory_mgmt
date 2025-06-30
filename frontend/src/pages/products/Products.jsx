@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
 import "../../styles/Products.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const token = localStorage.getItem("authToken");
 const Products = () => {
   const [products, setProducts] = React.useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +12,11 @@ const Products = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${backendUrl}/api/products/`);
+      const response = await axios.get(`${backendUrl}/api/products/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       console.log("Products data", response.data);
       setProducts(response.data);

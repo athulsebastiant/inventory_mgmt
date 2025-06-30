@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "../../styles/ProductDetails.css";
+const token = localStorage.getItem("authToken");
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const ProductDetails = () => {
   const params = useParams();
@@ -14,7 +15,12 @@ const ProductDetails = () => {
   async function getProduct() {
     try {
       const response = await axios.get(
-        `${backendUrl}/api/products/${params.id}`
+        `${backendUrl}/api/products/${params.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response);
       setProductInfo(response.data);
@@ -42,7 +48,12 @@ const ProductDetails = () => {
       try {
         const response = await axios.put(
           `${backendUrl}/api/products/${params.id}`,
-          editableInfo
+          editableInfo,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         if (response.data.success) {

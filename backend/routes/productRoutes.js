@@ -2,7 +2,8 @@ import express from "express";
 const router = express.Router();
 import * as productControllers from "../controllers/productControllers.js";
 import upload from "../middleware/multer.js";
-
+import protect from "../middleware/authMiddleware.js";
+router.use(protect);
 router.get("/", productControllers.getProducts);
 router.get("/:id", productControllers.getProductById);
 router.post(
