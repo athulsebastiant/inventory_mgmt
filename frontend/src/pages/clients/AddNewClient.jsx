@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-
+const token = localStorage.getItem("authToken");
 import "../../styles/AddNewClient.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const AddNewClient = () => {
@@ -62,7 +62,11 @@ const AddNewClient = () => {
         preferredContactMethod: preferredContact,
       };
 
-      const response = await axios.post(`${backendUrl}/api/clients/`, body);
+      const response = await axios.post(`${backendUrl}/api/clients/`, body, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.status === 201) {
         console.log("Client added successfully:", response.data);
         setName("");

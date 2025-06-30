@@ -4,6 +4,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../../styles/ClientDetails.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const token = localStorage.getItem("authToken");
 const ClientDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -16,7 +17,12 @@ const ClientDetails = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${backendUrl}/api/clients/${params.id}`
+        `${backendUrl}/api/clients/${params.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setClientInfo(response.data);
       setEditableInfo(response.data);
@@ -44,7 +50,12 @@ const ClientDetails = () => {
       try {
         const response = await axios.put(
           `${backendUrl}/api/clients/${params.id}`,
-          editableInfo
+          editableInfo,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         if (response.data.success) {

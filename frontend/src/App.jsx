@@ -22,12 +22,14 @@ import QuotationDetails from "./pages/quots/QuotationDetails";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="signup" element={<Signup />} />
+          <Route path="login" element={<Login />} />
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="products" element={<Products />} />

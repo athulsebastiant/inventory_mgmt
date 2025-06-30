@@ -3,11 +3,16 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/Clients.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const token = localStorage.getItem("authToken");
 const Clients = () => {
   const [clients, setClients] = useState([]);
   const fetchClients = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/clients/`);
+      const response = await axios.get(`${backendUrl}/api/clients/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setClients(response.data);
     } catch (error) {
       console.log(error);
