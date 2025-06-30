@@ -71,24 +71,35 @@ const Products = () => {
         <Link to={"add-new-product"} className="new_product_link">
           Add New Product
         </Link>
-        <button onClick={() => handleFilterChange("category", "powertools")}>
+        <button
+          onClick={() => handleFilterChange("category", "powertools")}
+          className="filter-btn btn-powertools"
+        >
           Power Tools
         </button>
         <button
           onClick={() => handleFilterChange("category", "nailers&staplers")}
+          className="filter-btn btn-nailers"
         >
           Nailers and Staplers
         </button>
         <button
           onClick={() => handleFilterChange("category", "measuringtools")}
+          className="filter-btn btn-handtools"
         >
           Measuring Tools
         </button>
-        <button onClick={() => handleFilterChange("category", "clamps&vises")}>
+        <button
+          onClick={() => handleFilterChange("category", "clamps&vises")}
+          className="filter-btn btn-safetygear"
+        >
           Clamps and Vises
         </button>
         {categoryFilter ? (
-          <button onClick={() => handleFilterChange("category", null)}>
+          <button
+            onClick={() => handleFilterChange("category", null)}
+            className="filter-btn btn-clear"
+          >
             Clear Filters
           </button>
         ) : null}

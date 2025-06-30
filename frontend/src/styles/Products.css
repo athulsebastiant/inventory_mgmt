@@ -22,6 +22,7 @@
     border-radius: 8px;
     font-weight: 500;
     transition: background-color 0.3s ease;
+    margin-right: 10px;
 }
 
 .new_product_link:hover {
@@ -119,3 +120,55 @@
     to {
         transform: rotate(360deg);
     } }
+
+        .filter-btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            margin: 0 0.5rem 1rem 0;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        .btn-powertools {
+            background-color: #0077b6;
+        }
+    
+        .btn-powertools:hover {
+            background-color: #005f8e;
+        }
+    
+        .btn-nailers {
+            background-color: #f77f00;
+        }
+    
+        .btn-nailers:hover {
+            background-color: #c96500;
+        }
+    
+        .btn-handtools {
+            background-color: #6a994e;
+        }
+    
+        .btn-handtools:hover {
+            background-color: #507a3a;
+        }
+    
+        .btn-safetygear {
+            background-color: #9c6644;
+        }
+    
+        .btn-safetygear:hover {
+            background-color: #7a4f35;
+        }
+    
+        .btn-clear {
+            background-color: #888888;
+        }
+    
+        .btn-clear:hover {
+            background-color: #666666;
+        }

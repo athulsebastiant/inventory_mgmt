@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import "../../styles/Purchasing.css";
@@ -9,6 +9,8 @@ const Purchasing = () => {
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const statusFilter = searchParams.get("status");
   const fetchPurchases = async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/purchase-orders/`);
@@ -26,6 +28,22 @@ const Purchasing = () => {
     fetchPurchases();
   }, []);
 
+  const displayedPurchases = statusFilter
+    ? purchases.filter(
+        (purchase) => purchase.status.toLowerCase() === statusFilter
+      )
+    : purchases;
+
+  function handleFilterChange(key, value) {
+    setSearchParams((prevParams) => {
+      if (value === null) {
+        prevParams.delete(key);
+      } else {
+        prevParams.set(key, value);
+      }
+      return prevParams;
+    });
+  }
   // const purchaseElements = purchases.map((purchase) => (
   //   <div key={purchase._id}>
   //     <Link to={`${purchase._id}`}>
@@ -48,14 +66,44 @@ const Purchasing = () => {
     <div className="purchasing-container">
       <div className="header">
         <h1>Purchase Orders</h1>
-        <Link to="new-purchase" className="add-button">
-          + Add New Purchase Order
-        </Link>
+        <div className="header-actions">
+          <div className="filter-btns">
+            <button
+              onClick={() => handleFilterChange("status", "delivered")}
+              className="status-button btn-delivered"
+            >
+              Delivered
+            </button>
+            <button
+              onClick={() => handleFilterChange("status", "pending")}
+              className="status-button btn-pending"
+            >
+              Pending
+            </button>
+            <button
+              onClick={() => handleFilterChange("status", "cancelled")}
+              className="status-button btn-cancelled"
+            >
+              Cancelled
+            </button>
+            {statusFilter ? (
+              <button
+                onClick={() => handleFilterChange("status", null)}
+                className="status-button btn-clear-filters"
+              >
+                Clear Filters
+              </button>
+            ) : null}
+          </div>
+          <Link to="new-purchase" className="add-button">
+            + Add New Purchase Order
+          </Link>
+        </div>
       </div>
       {loading && <div className="loading">Loading purchase orders...</div>}
       {error && <div className="error">{error}</div>}
       <div className="purchase-list">
-        {purchases.map((purchase) => (
+        {displayedPurchases.map((purchase) => (
           <Link
             to={`${purchase._id}`}
             key={purchase._id}

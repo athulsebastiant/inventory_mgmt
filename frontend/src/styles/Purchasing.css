@@ -12,7 +12,12 @@
     align-items: center;
     margin-bottom: 2rem;
 }
-
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    
+}
 .header h1 {
     font-size: 2rem;
     color: #6b5b47;
@@ -90,4 +95,52 @@
 
 .status.cancelled {
     color: red;
+}
+
+.status-button {
+    color: #FFF7ED;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    font-weight: 500;
+    margin-right: 0.5rem;
+}
+
+/* Delivered - Green */
+.btn-delivered {
+    background-color: #4CAF50;
+}
+
+.btn-delivered:hover {
+    background-color: #3e8e41;
+}
+
+/* Pending - Orange */
+.btn-pending {
+    background-color: #FF9800;
+}
+
+.btn-pending:hover {
+    background-color: #e68900;
+}
+
+/* Cancelled - Red */
+.btn-cancelled {
+    background-color: #f44336;
+}
+
+.btn-cancelled:hover {
+    background-color: #d32f2f;
+}
+
+/* Clear Filters - Gray */
+.btn-clear-filters {
+    background-color: #9E9E9E;
+}
+
+.btn-clear-filters:hover {
+    background-color: #7e7e7e;
 }
