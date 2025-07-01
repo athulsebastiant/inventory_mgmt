@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
 import "../../styles/Products.css";
+import SearchBar from "../../components/SearchBar";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const token = localStorage.getItem("authToken");
 const Products = () => {
   const [products, setProducts] = React.useState([]);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState("");
   const categoryFilter = searchParams.get("category");
   const fetchProducts = async () => {
     try {
@@ -38,12 +40,17 @@ const Products = () => {
     console.log("Number of products:", products.length);
   }, [products]);
 
-  const displayedProducts = categoryFilter
-    ? products.filter(
-        (product) =>
-          product.category.toLowerCase().replace(/\s+/g, "") === categoryFilter
-      )
-    : products;
+  const displayedProducts = products.filter((product) => {
+    const matchesCategory = categoryFilter
+      ? product.category.toLowerCase().replace(/\s+/g, "") === categoryFilter
+      : true;
+
+    const matchesSearch = `${product.name} ${product.sku}`
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
 
   const productElements = displayedProducts.map((product) => (
     <div key={product._id} className="product-tile">
@@ -72,6 +79,7 @@ const Products = () => {
   return (
     <div className="product-list-container">
       <h1>All Products</h1>
+      <SearchBar value={searchQuery} onChange={setSearchQuery} />
       <div>
         <Link to={"add-new-product"} className="new_product_link">
           Add New Product

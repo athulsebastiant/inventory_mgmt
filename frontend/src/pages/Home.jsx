@@ -34,17 +34,38 @@ const Home = () => {
           quotationsResponse,
           quotationValueResponse,
         ] = await Promise.all([
-          axios.get(`${backendUrl}/api/products/products/count`),
+          axios.get(`${backendUrl}/api/products/products/count`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
           axios.get(`${backendUrl}/api/clients/clients/count`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }),
-          axios.get(`${backendUrl}/api/products/products/total-inv-cost`),
-          axios.get(`${backendUrl}/api/suppliers/suppliers/count`),
-          axios.get(`${backendUrl}/api/client-quotations/quotations/count`),
+          axios.get(`${backendUrl}/api/products/products/total-inv-cost`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+          axios.get(`${backendUrl}/api/suppliers/suppliers/count`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+          axios.get(`${backendUrl}/api/client-quotations/quotations/count`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
           axios.get(
-            `${backendUrl}/api/client-quotations/quotations/total-quot-value`
+            `${backendUrl}/api/client-quotations/quotations/total-quot-value`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
           ),
         ]);
 

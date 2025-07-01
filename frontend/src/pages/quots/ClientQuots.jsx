@@ -3,10 +3,12 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../../styles/Client-Quots.css";
+import SearchBar from "../../components/SearchBar.jsx";
 const token = localStorage.getItem("authToken");
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const ClientQuots = () => {
   const [quotations, setQuotations] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   useEffect(() => {
@@ -77,6 +79,13 @@ const ClientQuots = () => {
       </div>
     );
   }
+
+  const filteredQuots = quotations.filter((quotation) =>
+    `${quotation._id} ${quotation.status} ${quotation.clientId.name} ${quotation.createdAt}`
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="client-quots-container">
       {/* Header Section */}
@@ -87,6 +96,7 @@ const ClientQuots = () => {
             Manage and track all your client quotations
           </p>
         </div>
+        <SearchBar value={searchQuery} onChange={setSearchQuery} />
         <Link to="new-quotation" className="add-button">
           <span className="button-icon">+</span>
           Add New Quotation
@@ -109,14 +119,14 @@ const ClientQuots = () => {
 
       {/* Quotations List */}
       <div className="quotations-section">
-        {quotations.length === 0 ? (
+        {filteredQuots.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">📄</div>
             <h3 className="empty-title">{"No quotations found"}</h3>
           </div>
         ) : (
           <div className="quotations-grid">
-            {quotations.map((quot) => (
+            {filteredQuots.map((quot) => (
               <div key={quot._id} className="quotation-card">
                 <Link
                   to={`/client-quotations/${quot._id}`}

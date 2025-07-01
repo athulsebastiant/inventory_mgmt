@@ -3,11 +3,13 @@ import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
+import SearchBar from "../../components/SearchBar";
 const token = localStorage.getItem("authToken");
 import "../../styles/Purchasing.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Purchasing = () => {
   const [purchases, setPurchases] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -33,11 +35,23 @@ const Purchasing = () => {
     fetchPurchases();
   }, []);
 
-  const displayedPurchases = statusFilter
-    ? purchases.filter(
-        (purchase) => purchase.status.toLowerCase() === statusFilter
-      )
-    : purchases;
+  // const displayedPurchases = statusFilter
+  //   ? purchases.filter(
+  //       (purchase) => purchase.status.toLowerCase() === statusFilter
+  //     )
+  //   : purchases;
+
+  const displayedPurchases = purchases.filter((purchase) => {
+    const matchesStatus = statusFilter
+      ? purchase.status.toLowerCase() === statusFilter
+      : true;
+
+    const matchesSearch = `${purchase._id} ${purchase.supplierId.name}`
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
+    return matchesStatus && matchesSearch;
+  });
 
   function handleFilterChange(key, value) {
     setSearchParams((prevParams) => {
@@ -71,6 +85,7 @@ const Purchasing = () => {
     <div className="purchasing-container">
       <div className="header">
         <h1>Purchase Orders</h1>
+        <SearchBar value={searchQuery} onChange={setSearchQuery} />
         <div className="header-actions">
           <div className="filter-btns">
             <button
