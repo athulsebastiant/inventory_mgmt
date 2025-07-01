@@ -132,7 +132,9 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-    
+                .filter-btn.active {
+                    border: 2px solid #333;
+                    box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.2);         }
         .btn-powertools {
             background-color: #0077b6;
         }
@@ -149,19 +151,19 @@
             background-color: #c96500;
         }
     
-        .btn-handtools {
+        .btn-measuringtools {
             background-color: #6a994e;
         }
     
-        .btn-handtools:hover {
+        .btn-measuringtools:hover {
             background-color: #507a3a;
         }
     
-        .btn-safetygear {
+        .btn-clampsvises {
             background-color: #9c6644;
         }
     
-        .btn-safetygear:hover {
+        .btn-clampsvises:hover {
             background-color: #7a4f35;
         }
     
@@ -172,3 +174,33 @@
         .btn-clear:hover {
             background-color: #666666;
         }
+
+                .product-tile.low-stock {
+                    border: 2px solid #ff4444;
+                    background-color: #fff5f5;
+                }
+        
+                .low-stock-warning {
+                    color: #ff4444;
+                    font-weight: bold;
+                    font-size: 12px;
+                    margin-top: 8px;
+                    padding: 4px 8px;
+                    background-color: #ffebee;
+                    border-radius: 4px;
+                    border-left: 3px solid #ff4444;
+                }
+        
+                /* Low Stock Filter Button */
+                .btn-low-stock {
+                    background-color: #ff4444;
+                    color: white;
+                }
+        
+                .btn-low-stock:hover {
+                    background-color: #cc3333;
+                }
+        
+                .btn-low-stock.active {
+                    background-color: #cc3333;
+                    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);         }

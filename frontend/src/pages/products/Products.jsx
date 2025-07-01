@@ -11,6 +11,7 @@ const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const categoryFilter = searchParams.get("category");
+  const lowStockFilter = searchParams.get("lowStock");
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -40,6 +41,10 @@ const Products = () => {
     console.log("Number of products:", products.length);
   }, [products]);
 
+  const isLowStock = (product) => {
+    return product.currentStock < product.reorderLevel;
+  };
+
   const displayedProducts = products.filter((product) => {
     const matchesCategory = categoryFilter
       ? product.category.toLowerCase().replace(/\s+/g, "") === categoryFilter
@@ -49,17 +54,28 @@ const Products = () => {
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
 
-    return matchesCategory && matchesSearch;
+    const matchesLowStock =
+      lowStockFilter === "true" ? isLowStock(product) : true;
+
+    return matchesCategory && matchesSearch && matchesLowStock;
   });
 
   const productElements = displayedProducts.map((product) => (
-    <div key={product._id} className="product-tile">
+    <div
+      key={product._id}
+      className={`product-tile ${isLowStock(product) ? "low-stock" : ""}`}
+    >
       <Link to={`${product._id}`}>
         <img src={product.imagesUrl[0]} alt="" />
         <div className="product-info">
           <h3>{product.name}</h3>
           <p>Current Stock: {product.currentStock}</p>
           <p>Cost Price: ${product.costPrice}</p>
+          {isLowStock(product) && (
+            <div className="low-stock-warning">
+              ⚠️ LOW STOCK - Reorder Level: {product.reorderLevel}
+            </div>
+          )}
         </div>
       </Link>
     </div>
@@ -76,6 +92,8 @@ const Products = () => {
     });
   }
 
+  const lowStockCount = products.filter(isLowStock).length;
+
   return (
     <div className="product-list-container">
       <h1>All Products</h1>
@@ -86,31 +104,55 @@ const Products = () => {
         </Link>
         <button
           onClick={() => handleFilterChange("category", "powertools")}
-          className="filter-btn btn-powertools"
+          className={`filter-btn btn-powertools ${
+            categoryFilter === "powertools" ? "active" : ""
+          }`}
         >
           Power Tools
         </button>
         <button
           onClick={() => handleFilterChange("category", "nailers&staplers")}
-          className="filter-btn btn-nailers"
+          className={`filter-btn btn-nailers ${
+            categoryFilter === "nailers&staplers" ? "active" : ""
+          }`}
         >
           Nailers and Staplers
         </button>
         <button
           onClick={() => handleFilterChange("category", "measuringtools")}
-          className="filter-btn btn-handtools"
+          className={`filter-btn btn-measuringtools ${
+            categoryFilter === "measuringtools" ? "active" : ""
+          }`}
         >
           Measuring Tools
         </button>
         <button
           onClick={() => handleFilterChange("category", "clamps&vises")}
-          className="filter-btn btn-safetygear"
+          className={`filter-btn btn-clampsvises ${
+            categoryFilter === "clamps&vises" ? "active" : ""
+          }`}
         >
           Clamps and Vises
         </button>
-        {categoryFilter ? (
+        <button
+          onClick={() =>
+            handleFilterChange(
+              "lowStock",
+              lowStockFilter === "true" ? null : "true"
+            )
+          }
+          className={`filter-btn btn-low-stock ${
+            lowStockFilter === "true" ? "active" : ""
+          }`}
+        >
+          Low Stock ({lowStockCount})
+        </button>
+        {categoryFilter || lowStockFilter ? (
           <button
-            onClick={() => handleFilterChange("category", null)}
+            onClick={() => {
+              handleFilterChange("category", null);
+              handleFilterChange("lowStock", null);
+            }}
             className="filter-btn btn-clear"
           >
             Clear Filters
