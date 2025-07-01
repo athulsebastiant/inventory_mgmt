@@ -1,6 +1,11 @@
 import React from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 const Header = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    navigate("/login");
+  };
   return (
     <header>
       <Link className="site-logo" to="/">
@@ -43,6 +48,9 @@ const Header = () => {
         >
           About
         </NavLink>
+        <button onClick={handleLogout} className="logout-button">
+          Logout
+        </button>
       </nav>
     </header>
   );

@@ -119,3 +119,19 @@ footer{
   background-color: #d1fae5;
   color: #065f46;
 }
+
+.logout-button {
+  background: none;
+  border: none;
+  color: #e11717;
+  font-weight: 600;
+  padding: 5px 20px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.logout-button:hover {
+  color: #f60404;
+  text-decoration: underline;
+}

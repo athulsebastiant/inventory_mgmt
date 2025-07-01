@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "../styles/Signup.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Signup = () => {
@@ -79,6 +80,7 @@ const Signup = () => {
         {errors.password && <p className="error-text">{errors.password}</p>}
 
         <button type="submit">Sign Up</button>
+        <Link to={"/login"}>Have an account? Login in here</Link>
       </form>
     </div>
   );

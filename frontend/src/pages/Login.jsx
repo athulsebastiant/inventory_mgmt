@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Login = () => {
@@ -28,7 +28,7 @@ const Login = () => {
       const { token } = res.data;
 
       localStorage.setItem("authToken", token);
-      alert("Login successful!");
+
       navigate("/");
     } catch (error) {
       setError(error.response?.data?.message || "Login Failed");
@@ -59,6 +59,7 @@ const Login = () => {
         {error && <p className="error-text">{error}</p>}
 
         <button type="submit">Log In</button>
+        <Link to={"/signup"}>Don't have an account? Sign up here</Link>
       </form>
     </div>
   );
