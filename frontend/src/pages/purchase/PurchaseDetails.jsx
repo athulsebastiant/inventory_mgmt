@@ -64,12 +64,25 @@ const PurchaseDetails = () => {
           <button
             onClick={async () => {
               try {
-                await axios.put(`${backendUrl}/api/purchase-orders/${id}`, {
-                  status,
-                });
+                await axios.put(
+                  `${backendUrl}/api/purchase-orders/${id}`,
+                  {
+                    status,
+                  },
+                  {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                );
                 alert("Status updated!");
                 const res = await axios.get(
-                  `${backendUrl}/api/purchase-orders/${id}`
+                  `${backendUrl}/api/purchase-orders/${id}`,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
                 );
                 setPurchaseOrder(res.data);
                 setStatus(res.data.status);

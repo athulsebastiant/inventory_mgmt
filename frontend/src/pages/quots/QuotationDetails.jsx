@@ -18,7 +18,7 @@ const QuotationDetails = () => {
         },
       });
       setQuotation(res.data);
-      if (res.data.status === "fulfilled") {
+      if (res.data.status === "fulfilled" || res.data.status === "rejected") {
         setIsFrozen(true);
       }
     } catch (err) {
@@ -33,6 +33,7 @@ const QuotationDetails = () => {
     try {
       const res = await axios.put(
         `${backendUrl}/api/client-quotations/${id}/approve`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -53,6 +54,7 @@ const QuotationDetails = () => {
     try {
       const res = await axios.put(
         `${backendUrl}/api/client-quotations/${id}/fulfill`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -66,6 +68,26 @@ const QuotationDetails = () => {
     } catch (err) {
       console.error("Fulfillment failed", err);
       setMessage("Fulfillment failed. Please try again.");
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      const res = await axios.put(
+        `${backendUrl}/api/client-quotations/${id}/reject`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setMessage(res.data.message);
+      setIsFrozen(true);
+      await fetchQuotation();
+    } catch (error) {
+      console.log("Rejection failed", error);
+      setMessage("Rejection failed. Please try again");
     }
   };
 
@@ -96,6 +118,13 @@ const QuotationDetails = () => {
           disabled={isFrozen}
         >
           Fulfill
+        </button>
+        <button
+          className="btn approve"
+          onClick={handleReject}
+          disabled={isFrozen}
+        >
+          Reject
         </button>
       </div>
 
