@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../styles/QuotationDetails.css";
 const token = localStorage.getItem("authToken");
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const QuotationDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [quotation, setQuotation] = useState(null);
   const [message, setMessage] = useState("");
   const [toPurchase, setToPurchase] = useState([]);
@@ -91,6 +92,34 @@ const QuotationDetails = () => {
     }
   };
 
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this quotation? This action cannot be undone."
+    );
+    if (!confirmDelete) {
+      return;
+    }
+    try {
+      const res = await axios.delete(
+        `${backendUrl}/api/client-quotations/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setMessage(res.data.message);
+
+      setTimeout(() => {
+        navigate("/client-quotations"), 1500;
+      });
+    } catch (error) {
+      console.log("Deletion failed", error);
+      setMessage("Deletion Failed. Please try again");
+    }
+  };
+
   if (!quotation) return <p>Loading...</p>;
 
   console.log(toPurchase);
@@ -125,6 +154,9 @@ const QuotationDetails = () => {
           disabled={isFrozen}
         >
           Reject
+        </button>
+        <button className="btn delete" onClick={handleDelete}>
+          Delete
         </button>
       </div>
 

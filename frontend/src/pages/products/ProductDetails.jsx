@@ -12,6 +12,7 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [editmode, setEditMode] = useState(false);
   const [editableInfo, setEditableInfo] = useState(null);
+  const [suppliersInfo, setSupplierInfo] = useState([]);
   async function getProduct() {
     try {
       const response = await axios.get(
@@ -32,8 +33,26 @@ const ProductDetails = () => {
     }
   }
 
+  async function getSuppliers() {
+    try {
+      const response = await axios.get(
+        `${backendUrl}/api/productSuppliers/product/${params.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data);
+      setSupplierInfo(response.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
   useEffect(() => {
     getProduct();
+    getSuppliers();
   }, [params.id]);
 
   const handleChange = (field, value) => {
@@ -167,6 +186,12 @@ const ProductDetails = () => {
         ) : (
           <p>
             <strong>Cost Price:</strong> ${productinfo.costPrice}
+          </p>
+        )}
+        {Array.isArray(suppliersInfo) && suppliersInfo.length > 0 && (
+          <p>
+            <strong>Suppliers:</strong>{" "}
+            {suppliersInfo.map((s, index) => s.supplierId?.name).join(", ")}
           </p>
         )}
       </div>
