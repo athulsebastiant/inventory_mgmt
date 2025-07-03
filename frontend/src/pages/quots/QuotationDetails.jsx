@@ -127,6 +127,32 @@ const QuotationDetails = () => {
     return sum + item.quantity * item.unitPrice;
   }, 0);
 
+  const downloadInvoice = async () => {
+    try {
+      const response = await axios.get(
+        `${backendUrl}/api/client-quotations/${id}/invoice`,
+        {
+          responseType: "blob", // important for binary file
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: "application/pdf" })
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `quotation-${id}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error downloading invoice:", error);
+      alert("Failed to download invoice.");
+    }
+  };
+
   return (
     <div className="quotation-container">
       <nav className="breadcrumb">
@@ -134,6 +160,7 @@ const QuotationDetails = () => {
         <span>Quotation Details</span>
       </nav>
       <div className="button-group">
+        <button onClick={downloadInvoice}>Download quotation invoice</button>
         <button
           className="btn approve"
           onClick={handleApprove}
@@ -172,7 +199,7 @@ const QuotationDetails = () => {
           <strong>Status:</strong> {quotation.status}
         </p>
         <p>
-          <strong>Total Price:</strong> ₹{totalPrice.toFixed(2)}
+          <strong>Total Price:</strong> ${totalPrice.toFixed(2)}
         </p>
       </div>
 

@@ -9,6 +9,7 @@ import {
   deleteQuotation,
   getQuotationCount,
   getTotalQuotValue,
+  generateQuotationInvoice,
 } from "../controllers/quotationControllers.js";
 import protect from "../middleware/authMiddleware.js";
 
@@ -23,4 +24,5 @@ router.put("/:id/reject", rejectQuotation);
 router.delete("/:id", deleteQuotation);
 router.get("/quotations/count", getQuotationCount);
 router.get("/quotations/total-quot-value", getTotalQuotValue);
+router.get("/:id/invoice", generateQuotationInvoice);
 export default router;
