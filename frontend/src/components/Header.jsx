@@ -1,6 +1,8 @@
 import React from "react";
+import { useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 const Header = () => {
+  const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -42,12 +44,28 @@ const Header = () => {
         >
           Purchasing
         </NavLink>
+        <div
+          className="dropdown"
+          onMouseEnter={() => setShowDropdown(true)}
+          onMouseLeave={() => setShowDropdown(false)}
+        >
+          <span className="dropdown-label">Analytics ▾</span>
+          {showDropdown && (
+            <div className="dropdown-menu">
+              <NavLink to="/analytics/top-selling-products">
+                Top Selling Products
+              </NavLink>
+              <NavLink to={"/analytics/stock-overview"}>Stock Overview</NavLink>
+            </div>
+          )}
+        </div>
         <NavLink
           to="/about"
           className={({ isActive }) => (isActive ? "activeLink" : "")}
         >
           About
         </NavLink>
+
         <button onClick={handleLogout} className="logout-button">
           Logout
         </button>

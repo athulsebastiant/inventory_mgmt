@@ -3,6 +3,7 @@ import ProductSupplier from "../models/productSupplier.js";
 import Supplier from "../models/supplier.js";
 import Product from "../models/product.js";
 import StockLog from "../models/stockLog.js";
+import puppeteer from "puppeteer";
 export const createPurchaseOrder = async (req, res) => {
   try {
     const { supplierId, items, expectedDeliveryDate } = req.body;
@@ -158,5 +159,114 @@ export const getPurchaseOrderCount = async (req, res) => {
     res.json({ count });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const generatePurchaseInvoice = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const purchaseOrder = await PurchaseOrder.findById(id)
+      .populate("supplierId")
+      .populate({
+        path: "items.productSupplierId",
+        populate: {
+          path: "productId",
+        },
+      });
+
+    if (!purchaseOrder) {
+      res.status(404).json({ message: "Quotation not found" });
+    }
+
+    const supplier = purchaseOrder.supplierId;
+    const products = purchaseOrder.items;
+
+    let itemsHtml = "";
+    let grandTotal = 0;
+
+    products.forEach((item, index) => {
+      const product = item.productSupplierId.productId;
+      const quantity = item.quantityOrdered;
+      const unitPrice = item.unitPrice;
+      const total = quantity * unitPrice;
+      grandTotal += total;
+
+      itemsHtml += `
+      <tr>
+      <td>${index + 1}</td>
+      <td>
+      <img src="${
+        product.imagesUrl[0]
+      }" width="50" height="50" style="object-fit:cover;"/>
+      <div>${product.name}</div>
+      </td>
+      <td>${quantity}</td>
+      <td>$${unitPrice.toFixed(2)}</td>
+      <td>$${total.toFixed(2)}</td>
+      </tr>     
+      `;
+    });
+
+    const html = `
+    <html>
+      <head><style>
+            body { font-family: Arial, sans-serif; padding: 40px; }
+            h1 { text-align: center; }
+            .client-details { margin-bottom: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+            th { background: #f0f0f0; }
+            .total { text-align: right; font-weight: bold; }
+          </style>
+        </head>
+        <body>
+          <h1>Purchase Invoice</h1>
+
+          <div class="client-details">
+            <strong>Supplier:</strong> ${supplier.name}<br/>
+            <strong>Phone:</strong> ${supplier.phone}<br/>
+            <strong>Email:</strong> ${supplier.email}<br/>
+            <strong>Address:</strong> ${supplier.address}<br/>
+            <strong>Status:</strong> ${purchaseOrder.status}<br/>
+            <strong>Date:</strong> ${new Date(
+              purchaseOrder.createdAt
+            ).toLocaleDateString()}
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${itemsHtml}
+              <tr>
+                <td colspan="4" class="total">Grand Total</td>
+                <td>$${grandTotal.toFixed(2)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </body>
+      </html>
+    
+    `;
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(html, { waitUntil: "networkidle0" });
+    const pdfBuffer = await page.pdf({ format: "A4", printBackground: true });
+    await browser.close();
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename = "purchase-order-${purchaseOrder._id}.pdf`,
+    });
+    res.send(pdfBuffer);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to generate invoice" });
   }
 };

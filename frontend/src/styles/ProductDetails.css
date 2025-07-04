@@ -124,3 +124,16 @@
     border-color: #8b7355;
     box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
 }
+
+.pd-total-section {
+    margin-top: 2rem;
+    padding: 1rem;
+    border-top: 2px solid #ddd;
+    text-align: right;
+}
+
+.pd-total-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}

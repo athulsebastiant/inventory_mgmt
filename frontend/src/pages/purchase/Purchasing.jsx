@@ -134,7 +134,7 @@ const Purchasing = () => {
               Supplier: {purchase.supplierId.name}
             </p>
             <p className="purchase-price">
-              Total Price: ₹
+              Total Price: $
               {purchase.items
                 .reduce(
                   (sum, item) => sum + item.quantityOrdered * item.unitPrice,

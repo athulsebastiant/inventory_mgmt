@@ -24,6 +24,8 @@ import NotFound from "./pages/NotFound";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
+import TopSellingProducts from "./pages/analytics/TopSellingProducts";
+import StockOverview from "./pages/analytics/StockOverview";
 const App = () => {
   return (
     <BrowserRouter>
@@ -71,6 +73,11 @@ const App = () => {
           <Route path="purchasing" element={<Purchasing />} />
           <Route path="purchasing/:id" element={<PurchaseDetails />} />
           <Route path="purchasing/new-purchase" element={<NewPurchase />} />
+          <Route
+            path="analytics/top-selling-products"
+            element={<TopSellingProducts />}
+          />
+          <Route path="analytics/stock-overview" element={<StockOverview />} />
         </Route>
       </Routes>
     </BrowserRouter>

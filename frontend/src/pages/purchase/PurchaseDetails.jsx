@@ -37,6 +37,36 @@ const PurchaseDetails = () => {
   if (error) return <div className="pd-error">{error}</div>;
   if (!purchaseOrder) return null;
 
+  const totalAmount = purchaseOrder.items.reduce((acc, item) => {
+    return acc + item.unitPrice * item.quantityOrdered;
+  }, 0);
+
+  const downloadInvoice = async () => {
+    try {
+      const response = await axios.get(
+        `${backendUrl}/api/purchase-orders/${id}/invoice`,
+        {
+          responseType: "blob",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: "application/pdf" })
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `purchase-order-${id}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error downloading invoice:", error);
+      alert("Failed to download invoice.");
+    }
+  };
+
   return (
     <div className="pd-container">
       <nav className="breadcrumb">
@@ -95,6 +125,7 @@ const PurchaseDetails = () => {
           >
             Update Status
           </button>
+          <button onClick={downloadInvoice}>Download purchase order</button>
         </div>
       </div>
 
@@ -115,7 +146,7 @@ const PurchaseDetails = () => {
               <div className="pd-item-info">
                 <h4>{product.name}</h4>
                 <p>
-                  <strong>Unit Price:</strong> ₹{item.unitPrice.toFixed(2)}
+                  <strong>Unit Price:</strong> ${item.unitPrice.toFixed(2)}
                 </p>
                 <p>
                   <strong>Quantity:</strong> {item.quantityOrdered}
@@ -124,6 +155,10 @@ const PurchaseDetails = () => {
             </div>
           );
         })}
+      </div>
+      <div className="pd-total-section">
+        <h3>Total Amount</h3>
+        <p className="pd-total-amount">${totalAmount.toFixed(2)}</p>
       </div>
     </div>
   );
