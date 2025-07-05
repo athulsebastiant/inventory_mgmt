@@ -125,7 +125,9 @@ const PurchaseDetails = () => {
           >
             Update Status
           </button>
-          <button onClick={downloadInvoice}>Download purchase order</button>
+          <button onClick={downloadInvoice} className="download-btn">
+            Download purchase order
+          </button>
         </div>
       </div>
 

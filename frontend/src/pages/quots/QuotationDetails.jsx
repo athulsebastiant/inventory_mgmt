@@ -160,7 +160,9 @@ const QuotationDetails = () => {
         <span>Quotation Details</span>
       </nav>
       <div className="button-group">
-        <button onClick={downloadInvoice}>Download quotation invoice</button>
+        <button onClick={downloadInvoice} className="download-btn">
+          Download quotation invoice
+        </button>
         <button
           className="btn approve"
           onClick={handleApprove}
@@ -182,7 +184,11 @@ const QuotationDetails = () => {
         >
           Reject
         </button>
-        <button className="btn delete" onClick={handleDelete}>
+        <button
+          className="btn delete"
+          onClick={handleDelete}
+          disabled={isFrozen}
+        >
           Delete
         </button>
       </div>

@@ -99,3 +99,17 @@
 .pd-error {
     color: red;
 }
+
+.download-btn{
+    background-color: green;
+    color: #FFF7ED;
+    border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+}
+
+.download-btn:hover {
+    background-color: #31aa72;
+}

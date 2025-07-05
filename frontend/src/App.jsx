@@ -26,6 +26,7 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import TopSellingProducts from "./pages/analytics/TopSellingProducts";
 import StockOverview from "./pages/analytics/StockOverview";
+import ClientEngagement from "./pages/analytics/ClientEngagement";
 const App = () => {
   return (
     <BrowserRouter>
@@ -78,6 +79,10 @@ const App = () => {
             element={<TopSellingProducts />}
           />
           <Route path="analytics/stock-overview" element={<StockOverview />} />
+          <Route
+            path="analytics/client-engagement"
+            element={<ClientEngagement />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

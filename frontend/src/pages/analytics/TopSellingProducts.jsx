@@ -12,7 +12,6 @@ import {
 } from "chart.js";
 import { useState } from "react";
 import { useEffect } from "react";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -21,6 +20,8 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 const TopSellingProducts = () => {
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(true);

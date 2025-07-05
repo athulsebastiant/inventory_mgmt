@@ -1,5 +1,6 @@
 import Quotation from "../models/quotation.js";
 import Product from "../models/product.js";
+import Client from "../models/client.js";
 export const getTopSellingProducts = async (req, res) => {
   try {
     const result = await Quotation.aggregate([
@@ -63,5 +64,38 @@ export const getStockOverviewByCategory = async (req, res) => {
   } catch (error) {
     console.log("Error fetching stock overview", error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getClientEngagement = async (req, res) => {
+  try {
+    const result = await Quotation.aggregate([
+      {
+        $group: {
+          _id: "$clientId",
+          quotationCount: { $sum: 1 },
+        },
+      },
+      {
+        $lookup: {
+          from: "clients",
+          localField: "_id",
+          foreignField: "_id",
+          as: "client",
+        },
+      },
+      { $unwind: "$client" },
+      {
+        $project: {
+          clientName: "$client.name",
+          quotationCount: 1,
+        },
+      },
+      { $sort: { quotationCount: -1 } },
+    ]);
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Failed to fetch client engagement data" });
   }
 };

@@ -11,6 +11,14 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const categoryColors = {
   "Power Tools": ["#4CAF50", "#81C784"],

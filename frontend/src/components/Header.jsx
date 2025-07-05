@@ -56,6 +56,9 @@ const Header = () => {
                 Top Selling Products
               </NavLink>
               <NavLink to={"/analytics/stock-overview"}>Stock Overview</NavLink>
+              <NavLink to={"/analytics/client-engagement"}>
+                Client Engagement
+              </NavLink>
             </div>
           )}
         </div>
