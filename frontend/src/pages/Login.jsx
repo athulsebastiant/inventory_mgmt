@@ -39,7 +39,7 @@ const Login = () => {
     <div className="signup-container">
       <form className="signup-form" onSubmit={handleSubmit}>
         <h2 className="signup-title">Login</h2>
-        <label>Email</label>
+        <label>Email (use test123@tmail.com)</label>
         <input
           type="email"
           name="email"
@@ -47,7 +47,7 @@ const Login = () => {
           onChange={handleChange}
           required
         />
-        <label>Password</label>
+        <label>Password (use test1234)</label>
         <input
           type="password"
           name="password"
