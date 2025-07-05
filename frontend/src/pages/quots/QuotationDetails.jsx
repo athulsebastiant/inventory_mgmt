@@ -11,6 +11,7 @@ const QuotationDetails = () => {
   const [message, setMessage] = useState("");
   const [toPurchase, setToPurchase] = useState([]);
   const [isFrozen, setIsFrozen] = useState(false);
+
   const fetchQuotation = async () => {
     try {
       const res = await axios.get(`${backendUrl}/api/client-quotations/${id}`, {

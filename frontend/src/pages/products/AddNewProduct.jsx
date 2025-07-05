@@ -20,7 +20,7 @@ const AddNewProduct = () => {
   const [reorderLevel, setReorderLevel] = useState("");
   const [costPrice, setCostPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [isDemoMode, setIsDemoMode] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(true);
   const [message, setMessage] = useState("");
   const onSubmitHandler = async (e) => {
     e.preventDefault();

@@ -13,6 +13,8 @@ const ClientDetails = () => {
   const [error, setError] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [editableInfo, setEditableInfo] = useState(null);
+  const [isDemoMode, setIsDemoMode] = useState(true);
+  const [message, setMessage] = useState("");
   async function getClient() {
     try {
       setLoading(true);
@@ -46,6 +48,13 @@ const ClientDetails = () => {
   };
 
   const handleEditSave = async () => {
+    if (isDemoMode) {
+      setMessage(
+        "Editing clients is restricted for demo purposes. You can view existing data."
+      );
+      return; // Stop execution if in demo mode
+    }
+
     if (editMode) {
       try {
         const response = await axios.put(
@@ -134,6 +143,15 @@ const ClientDetails = () => {
           <button onClick={handleEditSave} className="edit-save-btn">
             {editMode ? "💾 Save" : "✏️ Edit"}
           </button>
+          {message && (
+            <div
+              className={`message-box ${
+                isDemoMode ? "demo-message" : "success-message"
+              }`}
+            >
+              {message}
+            </div>
+          )}
           <div className="client-content">
             <div className="client-main-info">
               <div className="client-title-section">

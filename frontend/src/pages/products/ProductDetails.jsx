@@ -13,6 +13,8 @@ const ProductDetails = () => {
   const [editmode, setEditMode] = useState(false);
   const [editableInfo, setEditableInfo] = useState(null);
   const [suppliersInfo, setSupplierInfo] = useState([]);
+  const [isDemoMode, setIsDemoMode] = useState(true);
+  const [message, setMessage] = useState("");
   async function getProduct() {
     try {
       const response = await axios.get(
@@ -63,6 +65,13 @@ const ProductDetails = () => {
   };
 
   const handleEditSave = async () => {
+    if (isDemoMode) {
+      setMessage(
+        "Editing products is restricted for demo purposes. You can view existing data."
+      );
+      return; // Stop execution if in demo mode
+    }
+
     if (editmode) {
       try {
         const response = await axios.put(
@@ -110,6 +119,15 @@ const ProductDetails = () => {
       <button onClick={handleEditSave} className="editProduct-btn">
         {editmode ? "💾 Save" : "✏️ Edit"}
       </button>
+      {message && (
+        <div
+          className={`message-box ${
+            isDemoMode ? "demo-message" : "success-message"
+          }`}
+        >
+          {message}
+        </div>
+      )}
       <div className="product-images-grid">
         {productinfo.imagesUrl.map((url, index) =>
           url ? (

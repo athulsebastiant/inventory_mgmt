@@ -12,6 +12,8 @@ const SupplierDetails = () => {
   const [error, setError] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [editableInfo, setEditableInfo] = useState(null);
+  const [isDemoMode, setIsDemoMode] = useState(true);
+  const [message, setMessage] = useState("");
   async function getSupplier() {
     setLoading(true);
     setError("");
@@ -46,6 +48,13 @@ const SupplierDetails = () => {
   };
 
   const handleEditSave = async () => {
+    if (isDemoMode) {
+      setMessage(
+        "Editing suppliers is restricted for demo purposes. You can view existing data."
+      );
+      return; // Stop execution if in demo mode
+    }
+
     if (editMode) {
       try {
         const response = await axios.put(
@@ -87,6 +96,15 @@ const SupplierDetails = () => {
           <button onClick={handleEditSave} className="edit-save-btn">
             {editMode ? "💾 Save" : "✏️ Edit"}
           </button>
+          {message && (
+            <div
+              className={`message-box ${
+                isDemoMode ? "demo-message" : "success-message"
+              }`}
+            >
+              {message}
+            </div>
+          )}
           {editMode ? (
             <input
               className="supplier-input"

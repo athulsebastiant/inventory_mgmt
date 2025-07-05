@@ -13,7 +13,7 @@ const AddNewQuotation = () => {
   const [quotationProducts, setQuotationProducts] = useState([]);
   const [isCreatingQuotation, setIsCreatingQuotation] = useState(false);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const [isDemoMode, setIsDemoMode] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(true);
   const [message, setMessage] = useState("");
   useEffect(() => {
     // Fetch clients
